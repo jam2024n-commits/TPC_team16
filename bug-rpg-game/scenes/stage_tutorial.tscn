@@ -1,0 +1,96 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/block.tscn" id="1_block"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/goal.tscn" id="3_goal"]
+[ext_resource type="Script" path="res://scripts/stage_tutorial.gd" id="4_stage"]
+
+[node name="StageTutorial" type="Node2D"]
+script = ExtResource("4_stage")
+
+[node name="Floor" parent="." instance=ExtResource("1_block")]
+position = Vector2(0, 164)
+size = Vector2(640, 16)
+
+[node name="WallLeft" parent="." instance=ExtResource("1_block")]
+size = Vector2(8, 180)
+
+[node name="WallRight" parent="." instance=ExtResource("1_block")]
+position = Vector2(632, 0)
+size = Vector2(8, 180)
+
+[node name="Ceiling" parent="." instance=ExtResource("1_block")]
+size = Vector2(640, 8)
+
+[node name="Step" parent="." instance=ExtResource("1_block")]
+position = Vector2(96, 148)
+size = Vector2(24, 16)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="LowTunnel" parent="." instance=ExtResource("1_block")]
+position = Vector2(176, 118)
+size = Vector2(64, 32)
+color = Color(0.5, 0.4, 0.4, 1)
+
+[node name="StairA" parent="." instance=ExtResource("1_block")]
+position = Vector2(276, 124)
+size = Vector2(20, 8)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="StairB" parent="." instance=ExtResource("1_block")]
+position = Vector2(300, 100)
+size = Vector2(20, 8)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="Walkway" parent="." instance=ExtResource("1_block")]
+position = Vector2(324, 76)
+size = Vector2(64, 8)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="ThinWall" parent="." instance=ExtResource("1_block")]
+position = Vector2(340, 104)
+collision_layer = 2
+size = Vector2(8, 60)
+color = Color(0.6, 0.5, 0.7, 1)
+
+[node name="Goal" parent="." instance=ExtResource("3_goal")]
+position = Vector2(560, 164)
+
+[node name="SignMove" type="Label" parent="."]
+offset_left = 16.0
+offset_top = 136.0
+theme_override_font_sizes/font_size = 8
+text = "A/D: MOVE"
+
+[node name="SignJump" type="Label" parent="."]
+offset_left = 84.0
+offset_top = 126.0
+theme_override_font_sizes/font_size = 8
+text = "W: JUMP"
+
+[node name="SignCrouch" type="Label" parent="."]
+offset_left = 150.0
+offset_top = 136.0
+theme_override_font_sizes/font_size = 8
+text = "S: CROUCH"
+
+[node name="SignDash" type="Label" parent="."]
+offset_left = 246.0
+offset_top = 136.0
+theme_override_font_sizes/font_size = 8
+text = "SHIFT: DASH"
+
+[node name="GoalLabel" type="Label" parent="."]
+offset_left = 544.0
+offset_top = 120.0
+theme_override_font_sizes/font_size = 8
+text = "GOAL!"
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(24, 164)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+limit_left = 0
+limit_top = 0
+limit_right = 640
+limit_bottom = 180

@@ -1,0 +1,30 @@
+{
+  "bugs": [
+    {
+      "id": "wall_clip",
+      "title": "しゃがみダッシュで壁抜け",
+      "files": ["scripts/player.gd"],
+      "trigger": "しゃがみ中にダッシュ",
+      "effect": "壁を通過できる",
+      "requires": [],
+      "route": "bug",
+      "stage": "tutorial",
+      "hint": "しゃがむと当たり判定が小さくなることを、先に体験させる",
+      "discovery": "normal",
+      "note": ""
+    },
+    {
+      "id": "wall_clip_loop",
+      "title": "壁抜けから無限ループ",
+      "files": ["scripts/player.gd", "scripts/stage_loop.gd"],
+      "trigger": "wall_clip の状態で特定の壁を抜ける",
+      "effect": "敵を倒しても最初に戻る",
+      "requires": ["wall_clip", "dash_loop"],
+      "route": "bug",
+      "stage": "stage_2",
+      "hint": "",
+      "discovery": "undetectable",
+      "note": "脱出方法は Enter か break;"
+    }
+  ]
+}
