@@ -29,7 +29,7 @@ func start(enemy: Node) -> void:
 	battle.queue_free()
 	match result:
 		"win":
-			enemy.queue_free()
+			enemy.defeat()
 			stage.process_mode = Node.PROCESS_MODE_INHERIT
 		"escape":
 			enemy.disarm()

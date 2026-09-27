@@ -7,6 +7,21 @@ extends Node2D
 var _armed := true
 
 
+func _ready() -> void:
+	if WorldState.is_defeated(_key()):
+		set_process(false)
+		queue_free()
+
+
+func defeat() -> void:
+	WorldState.mark_defeated(_key())
+	queue_free()
+
+
+func _key() -> String:
+	return "%s:%s" % [owner.scene_file_path, owner.get_path_to(self)]
+
+
 func _process(_delta: float) -> void:
 	var fully_visible := _is_fully_visible()
 	if not _armed:

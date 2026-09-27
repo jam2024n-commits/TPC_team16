@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends Control
 
 signal closed
 
@@ -12,12 +12,12 @@ const UNKNOWN_LABEL := "？？？"
 const FOUND_COLOR := Color(0.22, 0.22, 0.3)
 const UNKNOWN_COLOR := Color(0.12, 0.12, 0.16)
 
-@onready var _title: Label = $Title
-@onready var _grid: GridContainer = $Grid
-@onready var _detail: Label = $Detail
-@onready var _prev: Button = $Nav/PrevButton
-@onready var _next: Button = $Nav/NextButton
-@onready var _back: Button = $Nav/BackButton
+@onready var _title: Label = $Content/Title
+@onready var _grid: GridContainer = $Content/Grid
+@onready var _detail: Label = $Content/Detail
+@onready var _prev: Button = $Content/Nav/PrevButton
+@onready var _next: Button = $Content/Nav/NextButton
+@onready var _back: Button = $Content/Nav/BackButton
 
 var _page := 0
 

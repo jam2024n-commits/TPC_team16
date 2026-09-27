@@ -32,6 +32,7 @@ var _fixture_mat: StandardMaterial3D
 var _item_mat: StandardMaterial3D
 var _flickering: Array[OmniLight3D] = []
 var _crouch_zones := 0
+var _leaving := false
 
 
 func _ready() -> void:
@@ -171,15 +172,17 @@ func _on_crouch_zone(body: Node3D, change: int) -> void:
 	_crouch_zones += change
 	var inside := _crouch_zones > 0
 	_player.can_crouch = inside
-	_crouch_hint.visible = inside
+	_crouch_hint.visible = inside and not _leaving
 
 
 func _on_goal_entered(body: Node3D) -> void:
-	if body != _player:
+	if body != _player or _leaving:
 		return
+	_leaving = true
+	_crouch_hint.visible = false
 	if not Inventory.has_item(ITEM_ID):
 		# FAKE_BUG: maze_goal_clip
 		BugRegistry.trigger("maze_goal_clip")
 		Inventory.add_item(ITEM_ID)
-		await get_tree().create_timer(1.2).timeout
+		await GameUI.item_toast_finished
 	ViewSwitcher.return_to_field()

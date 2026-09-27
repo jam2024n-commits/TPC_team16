@@ -1,8 +1,11 @@
 extends CanvasLayer
 
+signal item_toast_finished
+
 const SHOWN_Y := 6.0
 const HIDDEN_Y := -34.0
-const HOLD_TIME := 2.5
+const BUG_HOLD_TIME := 2.5
+const ITEM_HOLD_TIME := 1.2
 
 @onready var _pause_menu: Control = $PauseMenu
 @onready var _menu: Control = $PauseMenu/Menu
@@ -11,9 +14,12 @@ const HOLD_TIME := 2.5
 @onready var _exit_button: Button = $PauseMenu/Menu/ExitButton
 @onready var _bug_book: Control = $PauseMenu/BugBook
 @onready var _discovery: Control = $Discovery
-@onready var _icon: Control = $Discovery/Icon
+@onready var _discovery_icon: Control = $Discovery/Icon
+@onready var _item_get: Control = $ItemGet
+@onready var _item_icon: Control = $ItemGet/Icon
+@onready var _item_text: Label = $ItemGet/Text
 
-var _tween: Tween
+var _tweens: Dictionary = {}
 
 
 func _ready() -> void:
@@ -23,6 +29,7 @@ func _ready() -> void:
 	_exit_button.pressed.connect(get_tree().quit)
 	_bug_book.closed.connect(_close_bug_book)
 	BugRegistry.bug_discovered.connect(_on_bug_discovered)
+	Inventory.item_added.connect(_on_item_added)
 
 
 func _input(event: InputEvent) -> void:
@@ -57,13 +64,27 @@ func _close_bug_book() -> void:
 
 func _on_bug_discovered(id: String) -> void:
 	print("バグを発見！ (%s)" % id)
-	if _tween:
-		_tween.kill()
-	_discovery.position.y = HIDDEN_Y
-	_icon.scale = Vector2.ZERO
-	_tween = create_tween()
-	_tween.tween_property(_discovery, "position:y", SHOWN_Y, 0.3)
-	_tween.tween_property(_icon, "scale", Vector2(1.4, 1.4), 0.15)
-	_tween.tween_property(_icon, "scale", Vector2.ONE, 0.1)
-	_tween.tween_interval(HOLD_TIME)
-	_tween.tween_property(_discovery, "position:y", HIDDEN_Y, 0.3)
+	_play_banner(_discovery, _discovery_icon, BUG_HOLD_TIME)
+
+
+func _on_item_added(id: String) -> void:
+	_item_text.text = "%sを手に入れた！" % Inventory.display_name(id)
+	var tween := _play_banner(_item_get, _item_icon, ITEM_HOLD_TIME)
+	tween.finished.connect(item_toast_finished.emit)
+
+
+func _play_banner(banner: Control, icon: Control, hold: float) -> Tween:
+	for other: Control in _tweens:
+		_tweens[other].kill()
+		other.position.y = HIDDEN_Y
+	_tweens.clear()
+	banner.position.y = HIDDEN_Y
+	icon.scale = Vector2.ZERO
+	var tween := create_tween()
+	tween.tween_property(banner, "position:y", SHOWN_Y, 0.3)
+	tween.tween_property(icon, "scale", Vector2(1.4, 1.4), 0.15)
+	tween.tween_property(icon, "scale", Vector2.ONE, 0.1)
+	tween.tween_interval(hold)
+	tween.tween_property(banner, "position:y", HIDDEN_Y, 0.3)
+	_tweens[banner] = tween
+	return tween

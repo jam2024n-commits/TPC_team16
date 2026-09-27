@@ -23,6 +23,7 @@ GameUI="*res://scenes/game_ui.tscn"
 BattleManager="*res://scenes/battle_manager.tscn"
 Inventory="*res://scripts/inventory.gd"
 ViewSwitcher="*res://scenes/view_switcher.tscn"
+WorldState="*res://scripts/world_state.gd"
 
 [display]
 

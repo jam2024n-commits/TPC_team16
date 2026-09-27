@@ -36,8 +36,8 @@
       "route": "bug",
       "stage": "tutorial",
       "hint": "ゴール付近の壁だけ薄く光っている",
-      "discovery": "normal",
-      "note": "アイテムID: castle_door_key（仮）。プロンプト.mdの「開かずの扉」を想定した仮アイテム"
+      "discovery": "undetectable",
+      "note": "アイテムID: castle_door_key（仮）。プロンプト.mdの「開かずの扉」を想定した仮アイテム。ただの壁抜けなので発見数・BUG図鑑には数えない"
     }
   ]
 }

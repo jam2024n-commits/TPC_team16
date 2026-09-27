@@ -3,7 +3,7 @@ extends Node
 signal item_added(id: String)
 
 const DISPLAY_NAMES := {
-	"castle_door_key": "魔王城の扉のカギ（仮）",
+	"castle_door_key": "カギ",
 }
 
 var _items: Dictionary = {}
