@@ -1,3 +1,4 @@
+class_name LadybugIcon
 extends Control
 
 const CELL := 2
@@ -18,6 +19,9 @@ const COLORS := {
 	"R": Color(0.85, 0.15, 0.12),
 	"K": Color(0.08, 0.08, 0.1),
 }
+const SILHOUETTE_COLOR := Color(0.3, 0.3, 0.36)
+
+@export var silhouette := false
 
 
 func _ready() -> void:
@@ -31,4 +35,5 @@ func _draw() -> void:
 		for x in row.length():
 			var c := row[x]
 			if COLORS.has(c):
-				draw_rect(Rect2(Vector2(x, y) * CELL, Vector2(CELL, CELL)), COLORS[c])
+				var color: Color = SILHOUETTE_COLOR if silhouette else COLORS[c]
+				draw_rect(Rect2(Vector2(x, y) * CELL, Vector2(CELL, CELL)), color)

@@ -3,7 +3,7 @@
     {
       "id": "wall_clip",
       "title": "しゃがみダッシュで壁抜け",
-      "files": ["scripts/player.gd"],
+      "files": ["scripts/player.gd", "scripts/fp_player.gd"],
       "trigger": "しゃがみ中にダッシュ",
       "effect": "壁を通過できる",
       "requires": [],
@@ -14,17 +14,30 @@
       "note": ""
     },
     {
-      "id": "wall_clip_loop",
-      "title": "壁抜けから無限ループ",
-      "files": ["scripts/player.gd", "scripts/stage_loop.gd"],
-      "trigger": "wall_clip の状態で特定の壁を抜ける",
-      "effect": "敵を倒しても最初に戻る",
-      "requires": ["wall_clip", "dash_loop"],
+      "id": "triple_clip",
+      "title": "同じ壁を右・左・右と3回抜ける",
+      "files": ["scripts/triple_clip_gate.gd"],
+      "trigger": "特定の壁をwall_clipで右→左→右と連続で3回通過する",
+      "effect": "1人称3Dの迷路シーンへ切り替わる",
+      "requires": ["wall_clip"],
       "route": "bug",
-      "stage": "stage_2",
+      "stage": "tutorial",
       "hint": "",
-      "discovery": "undetectable",
-      "note": "脱出方法は Enter か break;"
+      "discovery": "normal",
+      "note": "例。座標や誘導（見た目のヒント等）は未調整"
+    },
+    {
+      "id": "maze_goal_clip",
+      "title": "迷路のゴール前の壁をwall_clipで抜ける",
+      "files": ["scripts/maze_backrooms.gd"],
+      "trigger": "迷路のゴール前の、薄く光る壁を、しゃがみ（ゴール前でのみ可能）+ダッシュで通過する",
+      "effect": "通常ルートでは入手できないアイテムを入手する",
+      "requires": ["triple_clip"],
+      "route": "bug",
+      "stage": "tutorial",
+      "hint": "ゴール付近の壁だけ薄く光っている",
+      "discovery": "normal",
+      "note": "アイテムID: castle_door_key（仮）。プロンプト.mdの「開かずの扉」を想定した仮アイテム"
     }
   ]
 }
