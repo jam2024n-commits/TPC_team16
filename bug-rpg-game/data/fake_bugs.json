@@ -3,7 +3,7 @@
     {
       "id": "wall_clip",
       "title": "しゃがみダッシュで壁抜け",
-      "files": ["scripts/player.gd", "scripts/fp_player.gd"],
+      "files": ["scripts/player.gd", "scripts/fp_player.gd", "scripts/top_down_player.gd"],
       "trigger": "しゃがみ中にダッシュ",
       "effect": "壁を通過できる",
       "requires": [],
@@ -31,13 +31,78 @@
       "title": "迷路のゴール前の壁をwall_clipで抜ける",
       "files": ["scripts/maze_backrooms.gd"],
       "trigger": "迷路のゴール前の、薄く光る壁を、しゃがみ（ゴール前でのみ可能）+ダッシュで通過する",
-      "effect": "通常ルートでは入手できないアイテムを入手する",
+      "effect": "暗転して、見下ろし視点の2D迷路へ切り替わる",
       "requires": ["triple_clip"],
       "route": "bug",
       "stage": "tutorial",
       "hint": "ゴール付近の壁だけ薄く光っている",
       "discovery": "undetectable",
-      "note": "アイテムID: castle_door_key（仮）。プロンプト.mdの「開かずの扉」を想定した仮アイテム。ただの壁抜けなので発見数・BUG図鑑には数えない"
+      "note": "ただの壁抜けなので発見数・BUG図鑑には数えない"
+    },
+    {
+      "id": "topdown_maze_clip",
+      "title": "見下ろし迷路のへこんだ壁を壁抜けしてゴールする",
+      "files": ["scripts/maze_topdown.gd"],
+      "trigger": "正方形の2D迷路の真ん中の区画から、4辺にある「へこんだ壁」のうちゴールにつながる1か所を、しゃがみ（Ctrl / C）+ダッシュで抜けてゴールに着く",
+      "effect": "通常ルートでは入手できないアイテムを入手し、元のステージへ戻る",
+      "requires": ["maze_goal_clip"],
+      "route": "bug",
+      "stage": "tutorial",
+      "hint": "壁抜けできる壁は、周りの壁と同じ色だが数ピクセルへこんでいる",
+      "discovery": "undetectable",
+      "note": "アイテムID: castle_door_key（仮）。プロンプト.mdの「開かずの扉」を想定した仮アイテム。今後、ゴールのあとにシューティングを挟み、そのクリア報酬をカギにする予定。ただの壁抜けなので発見数・BUG図鑑には数えない"
+    },
+    {
+      "id": "password_debug",
+      "title": "消し忘れのデバッグ用合言葉で扉が誤作動する",
+      "files": ["scripts/password_door.gd"],
+      "trigger": "扉のパスワード欄に、本来の合言葉（OPEN）ではなく DEBUG を入力する",
+      "effect": "扉は開かず、無限ループの部屋に飛ばされる（バグルートの入口）",
+      "requires": [],
+      "route": "bug",
+      "stage": "stage_1",
+      "hint": "stage_1 の扉の手前の看板「コマンドは英語（OPENなど）です」「一部デバッグ用の機能が残っていますが，気にしないでください」",
+      "discovery": "normal",
+      "note": "合言葉・看板の配置は仮"
+    },
+    {
+      "id": "infinite_loop",
+      "title": "倒してもクリアしても最初に戻る無限ループ",
+      "files": ["scripts/stage_loop.gd"],
+      "trigger": "ループ部屋の右端に着く",
+      "effect": "部屋の最初に戻され、敵も復活する",
+      "requires": ["password_debug"],
+      "route": "bug",
+      "stage": "stage_1",
+      "hint": "部屋の両端に while (true) { と } が書かれている",
+      "discovery": "undetectable",
+      "note": "ループに入ること自体は発見に数えない。抜け方（loop_return / loop_break）を数える"
+    },
+    {
+      "id": "loop_return",
+      "title": "Enter のあとに ; を打って return; する",
+      "files": ["scripts/stage_loop.gd"],
+      "trigger": "ループ部屋で、Enter を押したあと1秒以内に ; を押す",
+      "effect": "ループを強制終了し、stage_1 のゴール手前に出る",
+      "requires": ["infinite_loop"],
+      "route": "bug",
+      "stage": "stage_1",
+      "hint": "",
+      "discovery": "normal",
+      "note": ""
+    },
+    {
+      "id": "loop_break",
+      "title": "端末に break; と打ってループを抜ける",
+      "files": ["scripts/stage_loop.gd"],
+      "trigger": "ループ部屋の端末で break; と入力する",
+      "effect": "ループを抜け、stage_1 のゴール手前に出る",
+      "requires": ["infinite_loop"],
+      "route": "bug",
+      "stage": "stage_1",
+      "hint": "端末で help と打つとコマンド一覧が出る",
+      "discovery": "normal",
+      "note": "ループの外で break; を打つと error: 'break' outside loop"
     }
   ]
 }

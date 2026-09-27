@@ -33,6 +33,8 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if TextPrompt.is_open():
+		return
 	if event.is_action_pressed("pause_menu"):
 		if _bug_book.visible:
 			_close_bug_book()

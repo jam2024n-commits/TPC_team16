@@ -5,6 +5,9 @@ signal closed
 const ENTRIES := [
 	{"id": "wall_clip", "label": "壁抜け"},
 	{"id": "triple_clip", "label": "鍵のありか"},
+	{"id": "password_debug", "label": "合言葉"},
+	{"id": "loop_return", "label": "return;"},
+	{"id": "loop_break", "label": "break;"},
 ]
 const SLOTS_PER_PAGE := 8
 const SLOT_SIZE := Vector2(30, 28)

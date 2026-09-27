@@ -1,6 +1,7 @@
 extends Node2D
 
 @export var data: EnemyData
+@export var remember_defeat := true
 
 @onready var _body: ColorRect = $Body
 
@@ -8,13 +9,14 @@ var _armed := true
 
 
 func _ready() -> void:
-	if WorldState.is_defeated(_key()):
+	if remember_defeat and WorldState.is_defeated(_key()):
 		set_process(false)
 		queue_free()
 
 
 func defeat() -> void:
-	WorldState.mark_defeated(_key())
+	if remember_defeat:
+		WorldState.mark_defeated(_key())
 	queue_free()
 
 

@@ -6,7 +6,7 @@ const SLAB_THICKNESS := 0.3
 const START_YAW := -PI / 2.0
 const LIGHT_ENERGY := 0.6
 const FLICKER_RATE := 8.0
-const ITEM_ID := "castle_door_key"
+const TOPDOWN_MAZE := "res://scenes/maze_topdown.tscn"
 
 # '#': 壁  'S': 開始  'W': ゴール前の壁抜けできる壁  'c': しゃがめる範囲  'G': ゴール
 const LAYOUT := [
@@ -180,9 +180,6 @@ func _on_goal_entered(body: Node3D) -> void:
 		return
 	_leaving = true
 	_crouch_hint.visible = false
-	if not Inventory.has_item(ITEM_ID):
-		# FAKE_BUG: maze_goal_clip
-		BugRegistry.trigger("maze_goal_clip")
-		Inventory.add_item(ITEM_ID)
-		await GameUI.item_toast_finished
-	ViewSwitcher.return_to_field()
+	# FAKE_BUG: maze_goal_clip
+	BugRegistry.trigger("maze_goal_clip")
+	ViewSwitcher.go_to(TOPDOWN_MAZE)
