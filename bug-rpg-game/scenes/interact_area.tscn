@@ -10,7 +10,7 @@ script = ExtResource("1_area")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
 [node name="Hint" type="Label" parent="."]
-offset_right = 80.0
-offset_bottom = 12.0
-theme_override_font_sizes/font_size = 8
+offset_right = 120.0
+offset_bottom = 18.0
+theme_override_font_sizes/font_size = 12
 horizontal_alignment = 1

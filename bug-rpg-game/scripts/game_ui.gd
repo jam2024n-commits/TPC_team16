@@ -2,8 +2,8 @@ extends CanvasLayer
 
 signal item_toast_finished
 
-const SHOWN_Y := 6.0
-const HIDDEN_Y := -34.0
+const SHOWN_Y := 9.0
+const HIDDEN_Y := -51.0
 const ITEM_HOLD_TIME := 1.5
 const ITEM_DIM_ALPHA := 0.5
 const TITLE_SCENE := "res://scenes/title.tscn"

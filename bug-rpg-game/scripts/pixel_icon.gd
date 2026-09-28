@@ -1,7 +1,7 @@
 class_name PixelIcon
 extends Control
 
-const CELL := 2
+const CELL := 3
 const SILHOUETTE_COLOR := Color(0.3, 0.3, 0.36)
 
 @export var silhouette := false

@@ -7,27 +7,27 @@
 script = ExtResource("1_door")
 
 [node name="Frame" type="ColorRect" parent="."]
-offset_left = -9.0
-offset_top = -28.0
-offset_right = 9.0
+offset_left = -13.5
+offset_top = -42.0
+offset_right = 13.5
 mouse_filter = 2
 color = Color(0.75, 0.75, 0.8, 1)
 
 [node name="Body" type="ColorRect" parent="."]
-offset_left = -7.0
-offset_top = -26.0
-offset_right = 7.0
+offset_left = -10.5
+offset_top = -39.0
+offset_right = 10.5
 mouse_filter = 2
 color = Color(0.97, 0.97, 1, 1)
 
 [node name="Knob" type="ColorRect" parent="."]
-offset_left = 3.0
-offset_top = -14.0
-offset_right = 5.0
-offset_bottom = -12.0
+offset_left = 4.5
+offset_top = -21.0
+offset_right = 7.5
+offset_bottom = -18.0
 mouse_filter = 2
 color = Color(0.6, 0.6, 0.65, 1)
 
 [node name="InteractArea" parent="." instance=ExtResource("2_area")]
-size = Vector2(24, 28)
+size = Vector2(36, 42)
 hint_text = "E: 入る"

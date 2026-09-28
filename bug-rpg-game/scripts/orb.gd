@@ -4,10 +4,10 @@ extends Area2D
 
 signal collected
 
-const RADIUS := 4.0
-const GLOW_RADIUS := 7.0
+const RADIUS := 6.0
+const GLOW_RADIUS := 10.5
 const COLOR := Color(1.0, 0.88, 0.3)
-const BOB_HEIGHT := 2.0
+const BOB_HEIGHT := 3.0
 const BOB_SPEED := 3.0
 
 var _time := 0.0

@@ -7,7 +7,7 @@ extends Node2D
 
 const TITLE_HOLD := 1.0
 const TITLE_FADE := 0.5
-const TITLE_FONT_SIZE := 12
+const TITLE_FONT_SIZE := 18
 const KANJI_DIGITS := ["", "一", "二", "三", "四", "五", "六", "七", "八", "九"]
 
 @export var floor_number := 1

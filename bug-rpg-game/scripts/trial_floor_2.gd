@@ -3,9 +3,9 @@ extends "res://scripts/trial_floor.gd"
 # 第二層。右の境界を壁抜けした先に、まだ続きがある（「端だと思っていたものに、実はまだ奥があった」）。
 # 境界の外に出るとカメラの右の限界を広げ、横スクロールが始まる
 
-const SCREEN_WIDTH := 320
+const SCREEN_WIDTH := 480
 
-@export var world_width := 640
+@export var world_width := 960
 
 @onready var _camera: Camera2D = $Player/Camera2D
 

@@ -17,8 +17,8 @@ func _ready() -> void:
 	_shape.shape = rect
 	_shape.position = Vector2(0, -size.y / 2.0)
 	_hint.text = hint_text
-	_hint.position = Vector2(-40, -size.y - 14)
-	_hint.size = Vector2(80, 12)
+	_hint.position = Vector2(-60, -size.y - 21)
+	_hint.size = Vector2(120, 18)
 	_hint.visible = false
 	body_entered.connect(_on_body.bind(true))
 	body_exited.connect(_on_body.bind(false))
