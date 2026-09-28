@@ -92,9 +92,10 @@ func _close_confirm() -> void:
 	_reset_button.grab_focus()
 
 
-# 全データリセット：アイテム（Inventory）と音の設定（Settings）を最初の状態に戻し、記録も消す
+# 全データリセット：アイテム（Inventory）、進み具合（Progress）、音の設定（Settings）を最初の状態に戻し、記録も消す
 func _reset_all() -> void:
 	Inventory.reset()
+	Progress.reset()
 	Settings.reset()
 	_refresh()
 	_message.text = RESET_DONE_TEXT

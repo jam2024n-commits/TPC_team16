@@ -64,9 +64,11 @@ func acquire_message(id: String) -> String:
 	return "%sを手に入れた！" % display_name(id)
 
 
-# 試練の間のアイテムだけを記録する（方針変更前のカギなどは記録しない）
+# 試練の間のアイテムだけを記録する（方針変更前のカギなどは記録しない）。
+# 同じファイルに Progress の区画もあるので、読み込んでから書き換える
 func _save() -> void:
 	var file := ConfigFile.new()
+	file.load(SAVE_PATH)
 	for id in TRIAL_ITEMS:
 		file.set_value(SAVE_SECTION, id, _items.has(id))
 	file.save(SAVE_PATH)

@@ -6,10 +6,11 @@ extends Node2D
 # 赤い弾はよけるしかない。黄色い弾は、しゃがみ＋ダッシュ中（壁抜けと同じ条件）だけすり抜けられる（boss_bullet_clip）。
 # 自機の攻撃（どちらもボスの方向へまっすぐ飛ぶ）：Space の通常弾（杖を持っているときだけ）、C のチャージ弾（ローブを持っているときだけ）。
 # 盾を持っていると、1回だけダメージを受けない（リトライすると戻る）。
-# ボスの HP が 0 になると GAME CLEAR、自機の HP が 0 になると GAME OVER
+# ボスの HP が 0 になると GAME CLEAR（CLEAR_WAIT 秒後に暗転してエンディング scenes/credits.tscn へ）、自機の HP が 0 になると GAME OVER
 
 const MAGIC_CIRCLE := preload("res://scripts/magic_circle.gd")
 const TITLE_SCENE := "res://scenes/title.tscn"
+const CREDITS_SCENE := "res://scenes/credits.tscn"
 const BGM := preload("res://assets/BGM/BOSS/Battle-Vampire_loop.ogg")
 
 const ARENA := Rect2(12, 12, 456, 246)
@@ -52,6 +53,8 @@ const YELLOW_SPEED := 90.0
 
 const RECOVER_TIME := 1.0
 const END_WAIT := 0.6
+# GAME CLEAR を出してから、暗転してエンディングへ進むまで
+const CLEAR_WAIT := 3.0
 
 # 自機の攻撃。通常弾は赤い魔法弾と同じ画像、チャージ弾は charge_sheet.png の 5 コマ目（右向き。飛ぶ向きに回す）
 const SHOT_SPEED := 300.0
@@ -366,6 +369,8 @@ func _on_game_clear() -> void:
 	create_tween().tween_property(_boss, "modulate:a", 0.0, END_WAIT)
 	await get_tree().create_timer(END_WAIT, false).timeout
 	_clear.visible = true
+	await get_tree().create_timer(CLEAR_WAIT, false).timeout
+	ViewSwitcher.go_to(CREDITS_SCENE)
 
 
 func _on_game_over() -> void:

@@ -37,7 +37,7 @@
   - 届いた画像は元のファイルを残したまま、`tools/convert_art_assets.gd` で使える形に変換する（実行後に `--import`）。ビーズ図案（`bead-pattern*.png`。1マス30ピクセルに拡大し、方眼の点が入った画像）は等倍のドット絵に戻す：杖 `assets/stick/staff.png`・盾 `assets/shield/buckler.png`・マント `assets/mant/mantle.png`（48x48）。試練の間の背景（JPEG）は横幅480に縮めて `assets/background/shiren/trial_background.png`。ボス戦の背景（細かい1枚絵の JPEG、1376x768）は縮めずに 16:9 に切るだけで `assets/background/BOSS/boss_background.png`（1365x768）
   - 試練の間の背景：`scenes/trial_background.tscn`（画面に固定。スクロールしても動かない。上下15ピクセルずつ切れる）を第一〜三層に置いている
   - アイテムの絵：各層のオーブは杖（第一層）・盾（第二層）・マント（第三層の「魔導士のローブ」）の絵（`orb.gd` の `texture`。24x24 で表示）。獲得の演出とアイテム一覧のアイコンも同じ絵（`Inventory.ITEM_IMAGES`。36x36 で表示）
-  - BGM：Autoload `Bgm`（`scripts/bgm_player.gd`）が流す。タイトル `assets/BGM/title/Epilogue_loop.ogg`、試練の間 `assets/BGM/shiren/village.mp3`、ボス戦 `assets/BGM/BOSS/Battle-Vampire_loop.ogg`、仮のエンディングは無音。同じ曲のままなら層のやり直しや次の層でも最初からにならない。ループはインポート設定（loop=true）。Godot は m4a を読めないので、BGM は ogg か mp3 で受け取る
+  - BGM：Autoload `Bgm`（`scripts/bgm_player.gd`）が流す。タイトル `assets/BGM/title/Epilogue_loop.ogg`、試練の間 `assets/BGM/shiren/village.mp3`、ボス戦 `assets/BGM/BOSS/Battle-Vampire_loop.ogg`、エンディング（`credits.tscn`）はタイトルと同じ曲。語りの画面は、その前の曲がそのまま続く。同じ曲のままなら層のやり直しや次の層でも最初からにならない。ループはインポート設定（loop=true）。Godot は m4a を読めないので、BGM は ogg か mp3 で受け取る
 - 境界：画面の上下左右の端に、境界だと分かる太さの四角い枠を置く。画面に貼り付けず、ステージ側に置く
   - 左の境界には進めない（後戻りできない）
   - アイテム未獲得で右の境界に触れると、1秒ほど暗転して同じ層を最初からやり直す。獲得済みなら、1秒ほど暗転して次の層へ
@@ -49,6 +49,11 @@
 - タイトル画面：中央にタイトル（文字）とボタン（「試練の間に入る」「アイテム一覧」「設定」「ゲームを終了」）。右下に「BOSS」アイコン（ボスへの挑戦）。簡易的なものでよい
   - アイテム一覧（`scenes/item_list.tscn`、`scripts/item_list.gd`）：試練の間のアイテムを順に並べる。持っているものは絵と名前、持っていないものは影（`shaders/silhouette.gdshader`）と「？？？」。「閉じる」か Esc で閉じる
 - アイテムの保存：`Inventory` が試練の間のアイテムだけを `user://save.cfg`（Windows では `%APPDATA%/Godot/app_userdata/Bug_Rpg_Game/save.cfg`）に記録し、起動時に読み込む。タイトルの設定の「全データリセット」で消せる。テストでアイテムを取ると記録されるので、テストの前に `save.cfg`・`settings.cfg` を退避し、後で元に戻すこと（遊んだ記録が入っていることがある）
+- 語り（暗転した画面に文章を出し、フェードで次へ。`scripts/story.gd` を使う画面。Esc メニューは開かない）。文章は指定されたもの（勝手に書き換えない）。行書の語りは太字（`assets/fonts/kouzan_gyousho_bold.tres`）
+  - 試練の間に初めて入るとき（`scenes/trial_intro_first.tscn`、行書）→ 第一層。2回目からは短い語り（`scenes/trial_intro_again.tscn`、行書）→ 第一層
+  - 第三層クリア（`scenes/trial_clear.tscn`、行書）→ タイトル
+  - 初めてボスに挑むとき（`scenes/boss_intro.tscn`、普通のフォント）→ ボス戦。2回目からは語りなし
+  - 「初めて」かどうかは Autoload `Progress`（`scripts/progress.gd`）が `save.cfg` の progress 区画に記録する。全データリセットで消える
 - Esc メニュー：タイトルへ戻るボタンと「設定」。戻るボタンは、試練の間（group `trial_floor`）では「試練の間を出る」、それ以外では「タイトルへ」と表示する（押したときの動きはどちらもタイトルへ）。「設定」はタイトルと同じ設定画面を開く（設定画面を開いている間の Esc は設定画面だけを閉じる）
 - 設定（タイトルと Esc メニューの「設定」、`scenes/settings_menu.tscn`）：ミュート（切り替え）と音量（スライダー、0〜100%、5%きざみ）。変えるとすぐ全体の音量（Master バス）に反映し、Autoload `Settings`（`scripts/settings.gd`）が `user://settings.cfg` に記録する
   - タイトルの設定だけ「全データリセット」ボタンを出す（`settings_menu.gd` の `show_reset`）。押すと確認（最初に選ばれているのは「やめる」）を出し、「消す」で獲得したアイテムと音の設定を最初の状態に戻し、`save.cfg`・`settings.cfg` も消す
@@ -69,7 +74,7 @@
   - 下段：右へ進む。低い段（ジャンプで乗る）と低い天井（しゃがみ歩きでくぐる）が2つずつ。右の境界の手前の天井（x=414〜438）が壊せるブロックで、壊して中段へ
   - 中段：左へ進む。柱（しゃがみジャンプで越える）→ 低い天井（しゃがみ歩き）→ 高い足場（しゃがみジャンプでしか届かない）→ 左の約1/4が上段への吹き抜け（しゃがみジャンプで乗る足場から上段へ）
   - 上段：上の境界が壊せるブロック（`trial_border.gd` の `top_breakable`）。壊すと境界全体が壊れ、画面の上に続く場所へ出られる（上の境界より上に出るとカメラが縦にスクロール）。1マス（18x18）の足場を、ぎりぎり届く高さ（132ピクセル上）で3つ、しゃがみジャンプで登った先にオーブ。落ちても上段まで落ちるだけ
-  - オーブを取ると、3つ目の足場の右側に道が左から右へ伸び（0.8秒）、その先に白い扉が現れる。扉の先は仮のエンディング（`scenes/ending.tscn`。「エンディング（仮）」と「タイトルに戻る」）
+  - オーブを取ると、3つ目の足場の右側に道が左から右へ伸び（0.8秒）、その先に白い扉が現れる。扉の先は第三層クリアの語り（`scenes/trial_clear.tscn`）で、そのあとタイトルへ戻る。前の仮のエンディング `scenes/ending.tscn` は今は使っていない（削除していない）
   - 偽バグ一覧には `crouch_jump`・`top_boundary_break`（どちらも発見数に数えない）として登録
 - ボス戦（`scenes/boss_battle.tscn`、`scripts/boss_battle.gd`）：タイトルの「BOSS」から入る。シューティング
   - フィールドは画面全体（境界の枠で囲む）。背景は1枚絵を画面の大きさ（480x270）に滑らかに縮めて表示（`boss_battle.tscn` の Background。フルスクリーンでは元の画像の細かさがほぼそのまま見える）。ボスは画面の中央（`scripts/boss_sprite.gd`、1秒で4枚のループ）
@@ -89,8 +94,8 @@
     - 通常攻撃：Space（入力 `shoot`）を押している間、0.15秒ごとに連射。画像は赤い魔法弾と同じ。ダメージ1。「はじまりのつえ」を持っているときだけ撃てる
     - チャージ攻撃：C（入力 `charge_shot`）を押してから1秒たつと自動で撃つ。1秒たつ前に離すと何も出ない。撃ったあとは押し直す。ダメージ5。画像は `tools/convert_art_assets.gd` でビーズ図案8枚（2〜7・9・10番）を横に並べた `assets/battle/bullet/charge/charge_sheet.png`（0〜3：ためている間、4：ため終わり、5：飛んでいく弾、6〜7：当たったとき）。「魔導士のローブ」を持っているときだけ使える
   - 「風神の盾」を持っていると、1回だけダメージを受けない（HP の横に盾の絵。防ぐと消え、自機の上に盾の絵が一瞬出る。無敵時間は普通に当たったときと同じ）。リトライで戻る
-  - ボスの HP が 0 になると、弾を消してボスが消え、「GAME CLEAR」と表示するだけ（戻るときは Esc メニューの「タイトルへ」）
-- 保留・未決定：GAME CLEAR のあと、シナリオとの関係、進行状況の扱い（入るたびに第一層からか など）、設定画面の音以外の項目、エンディングの中身（今は第三層クリアで仮のエンディング）
+  - ボスの HP が 0 になると、弾を消してボスが消え、「GAME CLEAR」と表示。3秒後に暗転してエンディング（`scenes/credits.tscn`、`scripts/credits.gd`）：「世界は平和を取り戻した。」だけをフェードイン・アウト → クレジット（行書で大きく「試練の間」、制作、BGM、素材）をフェードイン・アウト → 何も押さなくてもアプリを終了する
+- 保留・未決定：シナリオとの関係、進行状況の扱い（入るたびに第一層からか など）、設定画面の音以外の項目
 - 実装済み（2026-09-28）：
   - タイトル（`scenes/title.tscn`、起動時の画面）。背景は `assets/background/title/` の正方形の絵を 16:9 に切ったもの（`title_background.png`。扉全体と足元の草地が入る高さ。文字が読めるよう少し暗くしている）。タイトル名は「試練の間」で、行書のフォント（`assets/fonts/KouzanGyousho.ttf`、衡山毛筆フォント行書。出どころと利用条件は `assets/fonts/README.md`）で表示する。「BOSS」でボス戦へ。タイトルでは Esc メニューを開かない（シーンの group `no_pause_menu`）
   - 境界 `scenes/trial_border.tscn`（太さ12ピクセル）、オーブ `scenes/orb.tscn`、各層の共通処理 `scripts/trial_floor.gd`（層の番号・アイテムID・次の層を設定）

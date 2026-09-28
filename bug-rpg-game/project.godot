@@ -27,6 +27,7 @@ WorldState="*res://scripts/world_state.gd"
 TextPrompt="*res://scenes/text_prompt.tscn"
 Bgm="*res://scripts/bgm_player.gd"
 Settings="*res://scripts/settings.gd"
+Progress="*res://scripts/progress.gd"
 
 [display]
 

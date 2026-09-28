@@ -15,7 +15,7 @@
 script = ExtResource("1_floor")
 floor_number = 3
 item_id = "mage_robe"
-next_scene = "res://scenes/ending.tscn"
+next_scene = "res://scenes/trial_clear.tscn"
 
 [node name="Background" parent="." instance=ExtResource("20_background")]
 
