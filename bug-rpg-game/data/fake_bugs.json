@@ -79,6 +79,32 @@
       "note": "方針変更後（試練の間）の仕様。「端だと思っていたものに、実はまだ奥があった」という体験を作るためのもの"
     },
     {
+      "id": "crouch_jump",
+      "title": "しゃがみジャンプ（しゃがんで力をためて高く跳び、橙色のブロックを壊す）",
+      "files": ["scripts/player.gd"],
+      "trigger": "第三層で、床の上でしゃがんだまま1秒たって（白っぽく点滅）からジャンプキーを押す",
+      "effect": "約140ピクセル跳ぶ（普通のジャンプは約75）。上昇中に橙色のブロックに下から当たると壊す（頭はそこで止まる）。しゃがみを離すか、壁抜けで壁を通り抜けるとためは解除",
+      "requires": [],
+      "route": "bug",
+      "stage": "trial_floor_3",
+      "hint": "看板「Tips:ちょっと疲れたからしゃがもうかな...」",
+      "discovery": "undetectable",
+      "note": "方針変更後（試練の間）の仕様。第三層だけで使える（trial_player の can_crouch_jump）"
+    },
+    {
+      "id": "top_boundary_break",
+      "title": "第三層の上の境界をしゃがみジャンプで壊して、画面の上へ出る",
+      "files": ["scripts/trial_border.gd", "scripts/trial_floor_3.gd"],
+      "trigger": "第三層の上段で、上の境界（橙色）にしゃがみジャンプで下から当たる",
+      "effect": "上の境界が壊れ、画面の上に続く場所（縦スクロール）へ出られる。1マスの足場を3回しゃがみジャンプで登った先にオーブ（いにしえのバックラー）がある",
+      "requires": ["crouch_jump"],
+      "route": "bug",
+      "stage": "trial_floor_3",
+      "hint": "上の境界だけ、壊せるブロックと同じ色になっている",
+      "discovery": "undetectable",
+      "note": "方針変更後（試練の間）の仕様"
+    },
+    {
       "id": "boss_bullet_clip",
       "title": "ボス戦で、しゃがみ＋ダッシュ中に黄色い球をすり抜ける",
       "files": ["scripts/boss_player.gd", "scripts/boss_battle.gd"],

@@ -73,6 +73,11 @@ func _on_orb_collected() -> void:
 	_got_item = true
 	if item_id != "" and not Inventory.has_item(item_id):
 		Inventory.add_item(item_id)
+	_reveal_exit()
+
+
+# オーブを取ったあとに出口を出す。層ごとに演出を変えたいときは上書きする
+func _reveal_exit() -> void:
 	if _door:
 		_door.appear()
 

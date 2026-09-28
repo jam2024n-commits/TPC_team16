@@ -15,6 +15,7 @@ const ITEM_ICONS := {
 	"castle_door_key": KEY_ICON,
 	"beginning_staff": ORB_ICON,
 	"mage_robe": ORB_ICON,
+	"ancient_buckler": ORB_ICON,
 }
 
 @onready var _pause_menu: Control = $PauseMenu

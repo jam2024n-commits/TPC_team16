@@ -3,7 +3,12 @@ extends CharacterBody2D
 # 横スクロールのプレイヤー。
 # world_scale で、速さ・ジャンプ力・重力・当たり判定の大きさをまとめて倍率で変える
 # （試練の間は基準解像度 480x270 に合わせて 1.5。方針変更前の 320x180 のシーンは 1）。
-# 見た目は、Sprite（画像）があればそれを使い、なければ Body（四角）を使う
+# 見た目は、Sprite（画像）があればそれを使い、なければ Body（四角）を使う。
+# can_crouch_jump を有効にすると（第三層のみ）、しゃがみジャンプができる：
+#   床の上でしゃがんだまま1秒たつと、ため状態（白っぽく点滅）になる。しゃがんだまま歩いてもためは続く。
+#   ため状態でジャンプキーを押すと、立ち姿勢に戻って高く跳ぶ（しゃがみを押しているだけでは跳ばない）。
+#   しゃがみを離すか、壁抜けで壁を通り抜けると、ためは解除される。
+#   しゃがみジャンプで上昇中に、壊せるブロック（smash を持つもの）に下から当たると壊す（頭はそこでぶつかって止まる）
 
 const WALK_SPEED := 80.0
 const CROUCH_SPEED := 36.0
@@ -22,7 +27,13 @@ const THIN_WALL_MASK := 2
 const STAND_SIZE := Vector2(10, 20)
 const CROUCH_SIZE := Vector2(10, 10)
 
+const CROUCH_JUMP_CHARGE_TIME := 1.0
+const CROUCH_JUMP_HEIGHT := 280.0 / 3.0  # world_scale 1.5 で 140 ピクセル
+const CHARGE_BLINK_PERIOD := 0.12
+const CHARGE_BRIGHT := Color(1.9, 1.9, 1.9)
+
 @export var world_scale := 1.0
+@export var can_crouch_jump := false
 
 @onready var _shape: CollisionShape2D = $CollisionShape2D
 @onready var _body: ColorRect = get_node_or_null("Body")
@@ -32,6 +43,9 @@ var _crouching := false
 var _facing := 1
 var _dash_left := 0.0
 var _dash_cooldown := 0.0
+var _charge_time := 0.0
+var _charged := false
+var _high_jumping := false
 
 
 func _ready() -> void:
@@ -41,6 +55,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	_dash_cooldown = maxf(_dash_cooldown - delta, 0.0)
 	_update_crouch()
+	_update_charge(delta)
 
 	var dir := Input.get_axis("move_left", "move_right")
 	if dir != 0.0:
@@ -60,8 +75,11 @@ func _physics_process(delta: float) -> void:
 		var speed := (CROUCH_SPEED if _crouching else WALK_SPEED) * world_scale
 		velocity.x = move_toward(velocity.x, dir * speed, ACCEL * world_scale * delta)
 		velocity.y = minf(velocity.y + GRAVITY * world_scale * delta, MAX_FALL_SPEED * world_scale)
-		if is_on_floor() and not _crouching and Input.is_action_just_pressed("jump"):
-			velocity.y = JUMP_VELOCITY * world_scale
+		if is_on_floor() and Input.is_action_just_pressed("jump"):
+			if not _crouching:
+				velocity.y = JUMP_VELOCITY * world_scale
+			elif _charged and _can_stand():
+				_crouch_jump()
 
 	# FAKE_BUG: wall_clip
 	collision_mask = MASK_CROUCH_DASH if (_crouching and _dash_left > 0.0) else MASK_NORMAL
@@ -72,8 +90,67 @@ func _physics_process(delta: float) -> void:
 	if collision_mask == MASK_CROUCH_DASH and _overlaps_thin_wall():
 		BugRegistry.trigger("wall_clip")
 
+	# FAKE_BUG: crouch_jump
+	# 壁抜けで壁を通り抜けたら、しゃがみジャンプのためを解除する
+	if _charged and collision_mask == MASK_CROUCH_DASH and _overlaps_thin_wall():
+		_reset_charge()
+
+	if _high_jumping:
+		if is_on_ceiling():
+			_smash_ceiling()
+			_high_jumping = false
+		elif velocity.y >= 0.0:
+			_high_jumping = false
+
 	if is_on_wall():
 		_dash_left = 0.0
+
+
+# ---- しゃがみジャンプ ----
+
+func _update_charge(delta: float) -> void:
+	if not can_crouch_jump:
+		return
+	if _crouching:
+		if is_on_floor():
+			_charge_time += delta
+		if _charge_time >= CROUCH_JUMP_CHARGE_TIME:
+			_charged = true
+	else:
+		_reset_charge()
+	# ため状態は白っぽく点滅
+	var look: CanvasItem = _sprite if _sprite else _body
+	if look:
+		var bright := _charged and fmod(_charge_time, CHARGE_BLINK_PERIOD) < CHARGE_BLINK_PERIOD / 2.0
+		look.modulate = CHARGE_BRIGHT if bright else Color.WHITE
+
+
+func _reset_charge() -> void:
+	_charge_time = 0.0
+	_charged = false
+
+
+# FAKE_BUG: crouch_jump
+func _crouch_jump() -> void:
+	_crouching = false
+	_apply_size(STAND_SIZE)
+	velocity.y = -sqrt(2.0 * GRAVITY * CROUCH_JUMP_HEIGHT) * world_scale
+	_high_jumping = true
+	_reset_charge()
+	BugRegistry.trigger("crouch_jump")
+
+
+# FAKE_BUG: crouch_jump
+# しゃがみジャンプで頭をぶつけたブロックが壊せるものなら壊す（頭はそこで止まる）
+func _smash_ceiling() -> void:
+	for i in get_slide_collision_count():
+		var collider = get_slide_collision(i).get_collider()
+		if collider and collider.has_method("smash") and get_slide_collision(i).get_normal().y > 0.5:
+			collider.smash()
+
+
+func is_charged() -> bool:
+	return _charged
 
 
 # FAKE_BUG: wall_clip

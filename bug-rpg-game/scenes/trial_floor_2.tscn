@@ -12,7 +12,7 @@
 script = ExtResource("1_floor")
 floor_number = 2
 item_id = "mage_robe"
-next_scene = "res://scenes/trial_room.tscn"
+next_scene = "res://scenes/trial_floor_3.tscn"
 
 [node name="Border" parent="." instance=ExtResource("2_border")]
 right_clippable = true

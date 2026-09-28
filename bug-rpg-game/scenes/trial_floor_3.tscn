@@ -1,0 +1,136 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/trial_floor_3.gd" id="1_floor"]
+[ext_resource type="PackedScene" path="res://scenes/trial_border.tscn" id="2_border"]
+[ext_resource type="PackedScene" path="res://scenes/block.tscn" id="3_block"]
+[ext_resource type="PackedScene" path="res://scenes/breakable_block.tscn" id="4_breakable"]
+[ext_resource type="PackedScene" path="res://scenes/sign.tscn" id="5_sign"]
+[ext_resource type="PackedScene" path="res://scenes/orb.tscn" id="6_orb"]
+[ext_resource type="PackedScene" path="res://scenes/exit_door.tscn" id="7_door"]
+[ext_resource type="PackedScene" path="res://scenes/trial_player.tscn" id="8_player"]
+
+[node name="TrialFloor3" type="Node2D"]
+script = ExtResource("1_floor")
+floor_number = 3
+item_id = "ancient_buckler"
+next_scene = "res://scenes/ending.tscn"
+
+[node name="Border" parent="." instance=ExtResource("2_border")]
+top_breakable = true
+
+[node name="Lower" type="Node2D" parent="."]
+
+[node name="StepA" parent="Lower" instance=ExtResource("3_block")]
+position = Vector2(126, 246)
+size = Vector2(24, 12)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="HangA" parent="Lower" instance=ExtResource("3_block")]
+position = Vector2(198, 204)
+size = Vector2(36, 30)
+color = Color(0.5, 0.4, 0.4, 1)
+
+[node name="StepB" parent="Lower" instance=ExtResource("3_block")]
+position = Vector2(282, 246)
+size = Vector2(24, 12)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="HangB" parent="Lower" instance=ExtResource("3_block")]
+position = Vector2(342, 204)
+size = Vector2(30, 30)
+color = Color(0.5, 0.4, 0.4, 1)
+
+[node name="Slab1Left" parent="." instance=ExtResource("3_block")]
+position = Vector2(12, 195)
+size = Vector2(402, 9)
+
+[node name="Slab1Break" parent="." instance=ExtResource("4_breakable")]
+position = Vector2(414, 195)
+
+[node name="Slab1Right" parent="." instance=ExtResource("3_block")]
+position = Vector2(438, 195)
+size = Vector2(30, 9)
+
+[node name="Middle" type="Node2D" parent="."]
+
+[node name="Pillar1" parent="Middle" instance=ExtResource("3_block")]
+position = Vector2(372, 113)
+size = Vector2(12, 82)
+
+[node name="LowHang" parent="Middle" instance=ExtResource("3_block")]
+position = Vector2(300, 75)
+size = Vector2(36, 96)
+color = Color(0.5, 0.4, 0.4, 1)
+
+[node name="HighLedge" parent="Middle" instance=ExtResource("3_block")]
+position = Vector2(222, 110)
+size = Vector2(36, 9)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="Pillar2" parent="Middle" instance=ExtResource("3_block")]
+position = Vector2(204, 110)
+size = Vector2(18, 85)
+
+[node name="AtriumLedge" parent="Middle" instance=ExtResource("3_block")]
+position = Vector2(90, 116)
+size = Vector2(30, 9)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="Slab2" parent="." instance=ExtResource("3_block")]
+position = Vector2(126, 66)
+size = Vector2(342, 9)
+
+[node name="Above" type="Node2D" parent="."]
+
+[node name="LeftWall" parent="Above" instance=ExtResource("3_block")]
+position = Vector2(0, -460)
+size = Vector2(12, 472)
+color = Color(0.3, 0.3, 0.35, 1)
+
+[node name="RightWall" parent="Above" instance=ExtResource("3_block")]
+position = Vector2(468, -460)
+size = Vector2(12, 472)
+color = Color(0.3, 0.3, 0.35, 1)
+
+[node name="Tile1" parent="Above" instance=ExtResource("3_block")]
+position = Vector2(300, -66)
+size = Vector2(18, 18)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="Tile2" parent="Above" instance=ExtResource("3_block")]
+position = Vector2(348, -198)
+size = Vector2(18, 18)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="Tile3" parent="Above" instance=ExtResource("3_block")]
+position = Vector2(300, -330)
+size = Vector2(18, 18)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="Path" parent="Above" instance=ExtResource("3_block")]
+position = Vector2(318, -330)
+size = Vector2(150, 9)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="Sign" parent="." instance=ExtResource("5_sign")]
+position = Vector2(60, 258)
+text = "Tips:ちょっと疲れたからしゃがもうかな..."
+
+[node name="Orb" parent="." instance=ExtResource("6_orb")]
+position = Vector2(309, -348)
+
+[node name="ExitDoor" parent="." instance=ExtResource("7_door")]
+position = Vector2(440, -330)
+
+[node name="Player" parent="." instance=ExtResource("8_player")]
+position = Vector2(36, 258)
+can_crouch_jump = true
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+limit_left = 0
+limit_top = 0
+limit_right = 480
+limit_bottom = 270
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 6.0
