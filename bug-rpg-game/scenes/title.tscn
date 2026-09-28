@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/title.gd" id="1_title"]
 [ext_resource type="Script" path="res://scripts/boss_icon.gd" id="2_boss"]
+[ext_resource type="PackedScene" path="res://scenes/item_list.tscn" id="3_items"]
+[ext_resource type="PackedScene" path="res://scenes/settings_menu.tscn" id="4_settings"]
 
 [node name="Title" type="Control" groups=["no_pause_menu"]]
 layout_mode = 3
@@ -35,15 +37,20 @@ vertical_alignment = 1
 [node name="Menu" type="VBoxContainer" parent="."]
 layout_mode = 0
 offset_left = 165.0
-offset_top = 114.0
+offset_top = 105.0
 offset_right = 315.0
-offset_bottom = 207.0
+offset_bottom = 225.0
 theme_override_constants/separation = 9
 
 [node name="EnterButton" type="Button" parent="Menu"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "試練の間に入る"
+
+[node name="ItemsButton" type="Button" parent="Menu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "アイテム一覧"
 
 [node name="SettingsButton" type="Button" parent="Menu"]
 layout_mode = 2
@@ -54,15 +61,6 @@ text = "設定"
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "ゲームを終了"
-
-[node name="Message" type="Label" parent="."]
-layout_mode = 0
-offset_top = 219.0
-offset_right = 480.0
-offset_bottom = 237.0
-theme_override_colors/font_color = Color(0.7, 0.7, 0.75, 1)
-theme_override_font_sizes/font_size = 12
-horizontal_alignment = 1
 
 [node name="BossButton" type="Button" parent="."]
 layout_mode = 0
@@ -90,3 +88,9 @@ theme_override_font_sizes/font_size = 12
 text = "BOSS"
 horizontal_alignment = 1
 mouse_filter = 2
+
+[node name="ItemList" parent="." instance=ExtResource("3_items")]
+layout_mode = 1
+
+[node name="SettingsMenu" parent="." instance=ExtResource("4_settings")]
+layout_mode = 1

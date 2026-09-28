@@ -9,6 +9,10 @@ const ITEM_DIM_ALPHA := 0.5
 const TITLE_SCENE := "res://scenes/title.tscn"
 # この group に入っているシーン（タイトル画面など）では Esc メニューを開かない
 const NO_PAUSE_GROUP := "no_pause_menu"
+# 試練の間（この group の層）では、タイトルへ戻るボタンを「試練の間を出る」と表示する
+const TRIAL_GROUP := "trial_floor"
+const TITLE_BUTTON_TEXT := "タイトルへ"
+const TRIAL_EXIT_TEXT := "試練の間を出る"
 const KEY_ICON := preload("res://scripts/key_icon.gd")
 const ORB_ICON := preload("res://scripts/orb_icon.gd")
 const ITEM_ICONS := {
@@ -17,15 +21,13 @@ const ITEM_ICONS := {
 	"mage_robe": ORB_ICON,
 	"ancient_buckler": ORB_ICON,
 }
-# 画像があるアイテムは、ITEM_ICONS より優先して画像を表示する（48x48 を 36 で表示。フルスクリーン（4倍）でドットがちょうど3x3）
-const ITEM_IMAGES := {
-	"beginning_staff": preload("res://assets/stick/staff.png"),
-	"ancient_buckler": preload("res://assets/shield/buckler.png"),
-}
+# 絵があるアイテム（Inventory.item_image）は、ITEM_ICONS より優先して絵を表示する（48x48 を 36 で表示。フルスクリーン（4倍）でドットがちょうど3x3）
 
 @onready var _pause_menu: Control = $PauseMenu
 @onready var _menu: Control = $PauseMenu/Menu
 @onready var _title_button: Button = $PauseMenu/Menu/TitleButton
+@onready var _settings_button: Button = $PauseMenu/Menu/SettingsButton
+@onready var _settings_menu = $PauseMenu/SettingsMenu  # settings_menu.gd（タイトルの「設定」と同じもの）
 @onready var _resume_button: Button = $PauseMenu/Menu/ResumeButton
 @onready var _bug_button: Button = $PauseMenu/Menu/BugButton
 @onready var _exit_button: Button = $PauseMenu/Menu/ExitButton
@@ -45,6 +47,8 @@ func _ready() -> void:
 	_pause_menu.visible = false
 	_item_dim.visible = false
 	_title_button.pressed.connect(_go_to_title)
+	_settings_button.pressed.connect(_settings_menu.open)
+	_settings_menu.closed.connect(_settings_button.grab_focus)
 	_resume_button.pressed.connect(_set_paused.bind(false))
 	_bug_button.pressed.connect(_open_bug_book)
 	_exit_button.pressed.connect(get_tree().quit)
@@ -53,7 +57,8 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if TextPrompt.is_open() or _item_showing:
+	# 設定を開いている間の Esc は、設定の画面が自分で閉じる
+	if TextPrompt.is_open() or _item_showing or _settings_menu.visible:
 		return
 	if event.is_action_pressed("pause_menu"):
 		var scene := get_tree().current_scene
@@ -70,8 +75,11 @@ func _set_paused(paused: bool) -> void:
 	get_tree().paused = paused
 	_pause_menu.visible = paused
 	_bug_book.visible = false
+	_settings_menu.visible = false
 	_menu.visible = true
 	if paused:
+		var scene := get_tree().current_scene
+		_title_button.text = TRIAL_EXIT_TEXT if scene and scene.is_in_group(TRIAL_GROUP) else TITLE_BUTTON_TEXT
 		_title_button.grab_focus()
 
 
@@ -95,7 +103,7 @@ func _close_bug_book() -> void:
 # アイテム獲得の演出。演出の間はゲーム内の時間を止め、画面を暗くして、獲得したことをはっきり見せる
 func _on_item_added(id: String) -> void:
 	_item_text.text = Inventory.acquire_message(id)
-	var image: Texture2D = ITEM_IMAGES.get(id)
+	var image := Inventory.item_image(id)
 	_item_image.visible = image != null
 	_item_icon.visible = image == null
 	if image:

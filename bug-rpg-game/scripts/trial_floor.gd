@@ -10,6 +10,10 @@ const TITLE_FADE := 0.5
 const TITLE_FONT_SIZE := 18
 const KANJI_DIGITS := ["", "一", "二", "三", "四", "五", "六", "七", "八", "九"]
 const BGM := preload("res://assets/BGM/shiren/village.mp3")
+# 壁や障害物（block.gd を使うもの。境界も含む）に付ける枠線。色は背景の明るさで変わる
+const BLOCK_OUTLINE := preload("res://shaders/block_outline.tres")
+# 試練の間の層が入る group（Esc メニューの表示を変えるのに使う）
+const GROUP := "trial_floor"
 
 @export var floor_number := 1
 @export var item_id := ""
@@ -25,6 +29,10 @@ var _door = null  # exit_door.gd
 
 func _ready() -> void:
 	Bgm.play_music(BGM)
+	add_to_group(GROUP)
+	for block in find_children("*", "StaticBody2D", true, false):
+		if block.has_method("enable_outline"):
+			block.enable_outline(BLOCK_OUTLINE)
 	var orb := get_node_or_null("Orb")
 	if orb:
 		orb.collected.connect(_on_orb_collected)

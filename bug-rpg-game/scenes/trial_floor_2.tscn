@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/trial_floor_2.gd" id="1_floor"]
 [ext_resource type="PackedScene" path="res://scenes/trial_border.tscn" id="2_border"]
@@ -8,11 +8,12 @@
 [ext_resource type="PackedScene" path="res://scenes/trial_player.tscn" id="6_player"]
 [ext_resource type="PackedScene" path="res://scenes/exit_door.tscn" id="7_door"]
 [ext_resource type="PackedScene" path="res://scenes/trial_background.tscn" id="20_background"]
+[ext_resource type="Texture2D" path="res://assets/shield/buckler.png" id="21_item"]
 
 [node name="TrialFloor2" type="Node2D"]
 script = ExtResource("1_floor")
 floor_number = 2
-item_id = "mage_robe"
+item_id = "ancient_buckler"
 next_scene = "res://scenes/trial_floor_3.tscn"
 
 [node name="Background" parent="." instance=ExtResource("20_background")]
@@ -107,6 +108,7 @@ color = Color(0.45, 0.5, 0.35, 1)
 
 [node name="Orb" parent="." instance=ExtResource("5_orb")]
 position = Vector2(840, 240)
+texture = ExtResource("21_item")
 
 [node name="ExitDoor" parent="." instance=ExtResource("7_door")]
 position = Vector2(906, 258)

@@ -9,6 +9,7 @@ extends CharacterBody2D
 #   ため状態でジャンプキーを押すと、立ち姿勢に戻って高く跳ぶ（しゃがみを押しているだけでは跳ばない）。
 #   しゃがみを離すか、壁抜けで壁を通り抜けると、ためは解除される。
 #   しゃがみジャンプで上昇中に、壊せるブロック（smash を持つもの）に下から当たると壊す（頭はそこでぶつかって止まる）
+# idle_texture を設定すると（試練の間の主人公）、床の上で立ったまま IDLE_WAIT 以上動かないと待機モーションになる
 
 const WALK_SPEED := 80.0
 const CROUCH_SPEED := 36.0
@@ -32,8 +33,14 @@ const CROUCH_JUMP_HEIGHT := 280.0 / 3.0  # world_scale 1.5 で 140 ピクセル
 const CHARGE_BLINK_PERIOD := 0.12
 const CHARGE_BRIGHT := Color(1.9, 1.9, 1.9)
 
+# 待機モーション：idle_texture は同じ大きさのコマが横に IDLE_FRAMES 枚並んだ画像。IDLE_FRAME_TIME ごとに次のコマへ
+const IDLE_WAIT := 1.0
+const IDLE_FRAMES := 2
+const IDLE_FRAME_TIME := 0.5
+
 @export var world_scale := 1.0
 @export var can_crouch_jump := false
+@export var idle_texture: Texture2D
 
 @onready var _shape: CollisionShape2D = $CollisionShape2D
 @onready var _body: ColorRect = get_node_or_null("Body")
@@ -46,9 +53,13 @@ var _dash_cooldown := 0.0
 var _charge_time := 0.0
 var _charged := false
 var _high_jumping := false
+var _still_time := 0.0
+var _stand_texture: Texture2D
 
 
 func _ready() -> void:
+	if _sprite:
+		_stand_texture = _sprite.texture
 	_apply_size(STAND_SIZE)
 
 
@@ -104,6 +115,8 @@ func _physics_process(delta: float) -> void:
 
 	if is_on_wall():
 		_dash_left = 0.0
+
+	_update_idle(delta)
 
 
 # ---- しゃがみジャンプ ----
@@ -199,6 +212,29 @@ func _apply_size(base_size: Vector2) -> void:
 		_body.position = Vector2(-size.x / 2.0, -size.y)
 	if _sprite:
 		# 画像は足元を基準に置く。しゃがみ中は縦に縮める（しゃがみ用の画像ができるまでの仮）
-		var height := _sprite.texture.get_height()
+		# 大きさは1コマ分（待機モーション中はコマが並んだ画像になっているため）
+		var frame_size := _sprite.get_rect().size
 		_sprite.scale.y = base_size.y / STAND_SIZE.y
-		_sprite.position = Vector2(-_sprite.texture.get_width() / 2.0, -height * _sprite.scale.y)
+		_sprite.position = Vector2(-frame_size.x / 2.0, -frame_size.y * _sprite.scale.y)
+
+
+# ---- 待機モーション ----
+
+func _update_idle(delta: float) -> void:
+	if _sprite == null or idle_texture == null:
+		return
+	var still := is_on_floor() and not _crouching and _dash_left <= 0.0 and absf(velocity.x) < 1.0
+	_still_time = _still_time + delta if still else 0.0
+	if _still_time >= IDLE_WAIT:
+		if _sprite.texture != idle_texture:
+			_sprite.texture = idle_texture
+			_sprite.hframes = IDLE_FRAMES
+		_sprite.frame = int((_still_time - IDLE_WAIT) / IDLE_FRAME_TIME) % IDLE_FRAMES
+	elif _sprite.texture != _stand_texture:
+		_sprite.texture = _stand_texture
+		_sprite.hframes = 1
+		_sprite.frame = 0
+
+
+func is_idle() -> bool:
+	return _sprite != null and idle_texture != null and _sprite.texture == idle_texture

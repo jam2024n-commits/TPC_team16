@@ -1,7 +1,7 @@
 extends AnimatedSprite2D
 
 # ボスの見た目。ノーマル4枚を1秒で1周ループする（default）。
-# 被ダメージ時は「ノーマル1→赤1→ノーマル2→赤2…」と交互にする（damage）。自機の攻撃ができるまで damage は使わない
+# 被ダメージ時は「ノーマル1→赤1→ノーマル2→赤2…」と交互にする（damage。1秒で1周して default に戻る）
 
 const DIR := "res://assets/characters/boss/"
 const FRAME_COUNT := 4
@@ -25,5 +25,8 @@ func _ready() -> void:
 	play("default")
 
 
+# 連射で続けて当たっても最初からやり直さず、1周し終わるまで流す
 func play_damage() -> void:
+	if animation == "damage" and is_playing():
+		return
 	play("damage")

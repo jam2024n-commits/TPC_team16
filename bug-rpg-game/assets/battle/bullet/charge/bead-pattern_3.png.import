@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://csqfpyru2m8k0"
-path="res://.godot/imported/trial_background.png-cffdaecdd00714323319a5d84b9d68ab.ctex"
+uid="uid://jiuxkefvs7di"
+path="res://.godot/imported/bead-pattern_3.png-1c252d0733a76db45aec4a77a42d9327.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/background/shiren/trial_background.png"
-dest_files=["res://.godot/imported/trial_background.png-cffdaecdd00714323319a5d84b9d68ab.ctex"]
+source_file="res://assets/battle/bullet/charge/bead-pattern_3.png"
+dest_files=["res://.godot/imported/bead-pattern_3.png-1c252d0733a76db45aec4a77a42d9327.ctex"]
 
 [params]
 
@@ -23,7 +23,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
