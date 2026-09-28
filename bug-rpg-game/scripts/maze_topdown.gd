@@ -7,7 +7,7 @@ extends Node2D
 const TILE := 8.0
 const RECESS := 1.0
 const HINT_TIME := 4.0
-const ITEM_ID := "castle_door_key"
+const SHOOTER := "res://scenes/shooter.tscn"
 
 const FLOOR_COLOR := Color(0.1, 0.1, 0.12)
 const WALL_COLOR := Color(0.5, 0.47, 0.4)
@@ -178,7 +178,4 @@ func _on_goal_entered(body: Node2D) -> void:
 	_leaving = true
 	# FAKE_BUG: topdown_maze_clip
 	BugRegistry.trigger("topdown_maze_clip")
-	if not Inventory.has_item(ITEM_ID):
-		Inventory.add_item(ITEM_ID)
-		await GameUI.item_toast_finished
-	ViewSwitcher.return_to_field()
+	ViewSwitcher.go_to(SHOOTER)

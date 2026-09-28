@@ -5,6 +5,7 @@ signal closed
 const ENTRIES := [
 	{"id": "wall_clip", "label": "壁抜け"},
 	{"id": "triple_clip", "label": "鍵のありか"},
+	{"id": "bullet_clip", "label": "弾抜け"},
 	{"id": "password_debug", "label": "合言葉"},
 	{"id": "loop_return", "label": "return;"},
 	{"id": "loop_break", "label": "break;"},

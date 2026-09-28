@@ -44,13 +44,26 @@
       "title": "見下ろし迷路のへこんだ壁を壁抜けしてゴールする",
       "files": ["scripts/maze_topdown.gd"],
       "trigger": "正方形の2D迷路の真ん中の区画から、4辺にある「へこんだ壁」のうちゴールにつながる1か所を、しゃがみ（Ctrl / C）+ダッシュで抜けてゴールに着く",
-      "effect": "通常ルートでは入手できないアイテムを入手し、元のステージへ戻る",
+      "effect": "暗転して、縦シューティングが始まる",
       "requires": ["maze_goal_clip"],
       "route": "bug",
       "stage": "tutorial",
       "hint": "壁抜けできる壁は、周りの壁と同じ色だが数ピクセルへこんでいる",
       "discovery": "undetectable",
-      "note": "アイテムID: castle_door_key（仮）。プロンプト.mdの「開かずの扉」を想定した仮アイテム。今後、ゴールのあとにシューティングを挟み、そのクリア報酬をカギにする予定。ただの壁抜けなので発見数・BUG図鑑には数えない"
+      "note": "ただの壁抜けなので発見数・BUG図鑑には数えない"
+    },
+    {
+      "id": "bullet_clip",
+      "title": "しゃがみダッシュで黄色い弾をすり抜ける",
+      "files": ["scripts/shooter.gd"],
+      "trigger": "シューティングで、しゃがみ（S）+ダッシュ中に黄色い弾と重なる",
+      "effect": "黄色い弾の当たり判定が無効になり、隙間のない弾の列を抜けられる（赤い弾は抜けられない）",
+      "requires": ["topdown_maze_clip"],
+      "route": "bug",
+      "stage": "tutorial",
+      "hint": "黄色い弾は隙間なく並んで飛んでくるので、普通にはよけられない",
+      "discovery": "normal",
+      "note": "ボスを倒すとアイテム castle_door_key（仮。プロンプト.mdの「開かずの扉」を想定）を入手して元のステージへ戻る。発見数に数えるかは仮"
     },
     {
       "id": "password_debug",
