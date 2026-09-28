@@ -17,35 +17,62 @@ next_scene = "res://scenes/trial_room.tscn"
 [node name="Border" parent="." instance=ExtResource("2_border")]
 right_clippable = true
 
-[node name="Step" parent="." instance=ExtResource("3_block")]
-position = Vector2(72, 156)
+[node name="HangLeft" parent="." instance=ExtResource("3_block")]
+position = Vector2(88, 8)
+size = Vector2(12, 110)
+
+[node name="StartStep" parent="." instance=ExtResource("3_block")]
+position = Vector2(52, 156)
 size = Vector2(20, 16)
 color = Color(0.45, 0.5, 0.35, 1)
 
-[node name="ClipWall1" parent="." instance=ExtResource("3_block")]
-position = Vector2(112, 8)
+[node name="ClipWallLeft" parent="." instance=ExtResource("3_block")]
+position = Vector2(88, 124)
 collision_layer = 2
-size = Vector2(8, 164)
+size = Vector2(12, 48)
 color = Color(0.6, 0.5, 0.7, 1)
 
-[node name="JumpBlock" parent="." instance=ExtResource("3_block")]
-position = Vector2(160, 148)
-size = Vector2(24, 24)
+[node name="LedgeLeftHigh" parent="." instance=ExtResource("3_block")]
+position = Vector2(100, 96)
+size = Vector2(32, 6)
 color = Color(0.45, 0.5, 0.35, 1)
 
-[node name="LowCeiling" parent="." instance=ExtResource("3_block")]
-position = Vector2(206, 8)
-size = Vector2(30, 150)
-color = Color(0.5, 0.4, 0.4, 1)
+[node name="LedgeCenterLeft" parent="." instance=ExtResource("3_block")]
+position = Vector2(132, 136)
+size = Vector2(20, 6)
+color = Color(0.45, 0.5, 0.35, 1)
 
-[node name="ClipWall2" parent="." instance=ExtResource("3_block")]
-position = Vector2(250, 8)
+[node name="CenterWall" parent="." instance=ExtResource("3_block")]
+position = Vector2(152, 60)
+size = Vector2(16, 112)
+
+[node name="LedgeCenterRight" parent="." instance=ExtResource("3_block")]
+position = Vector2(168, 136)
+size = Vector2(20, 6)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="LedgeRightHigh" parent="." instance=ExtResource("3_block")]
+position = Vector2(188, 96)
+size = Vector2(32, 6)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="HangRight" parent="." instance=ExtResource("3_block")]
+position = Vector2(220, 8)
+size = Vector2(12, 110)
+
+[node name="ClipWallRight" parent="." instance=ExtResource("3_block")]
+position = Vector2(220, 124)
 collision_layer = 2
-size = Vector2(8, 164)
+size = Vector2(12, 48)
 color = Color(0.6, 0.5, 0.7, 1)
 
+[node name="ExitStep" parent="." instance=ExtResource("3_block")]
+position = Vector2(252, 152)
+size = Vector2(20, 20)
+color = Color(0.45, 0.5, 0.35, 1)
+
 [node name="Sign" parent="." instance=ExtResource("4_sign")]
-position = Vector2(44, 172)
+position = Vector2(36, 172)
 text = "Tips:ボタンを組み合せると壁を抜けられるかも...?"
 
 [node name="Beyond" type="Node2D" parent="."]

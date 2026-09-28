@@ -35,9 +35,9 @@ vertical_alignment = 1
 [node name="Menu" type="VBoxContainer" parent="."]
 layout_mode = 0
 offset_left = 110.0
-offset_top = 82.0
+offset_top = 76.0
 offset_right = 210.0
-offset_bottom = 126.0
+offset_bottom = 138.0
 theme_override_constants/separation = 6
 
 [node name="EnterButton" type="Button" parent="Menu"]
@@ -50,11 +50,16 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 8
 text = "設定"
 
+[node name="QuitButton" type="Button" parent="Menu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "ゲームを終了"
+
 [node name="Message" type="Label" parent="."]
 layout_mode = 0
-offset_top = 138.0
+offset_top = 146.0
 offset_right = 320.0
-offset_bottom = 150.0
+offset_bottom = 158.0
 theme_override_colors/font_color = Color(0.7, 0.7, 0.75, 1)
 theme_override_font_sizes/font_size = 8
 horizontal_alignment = 1

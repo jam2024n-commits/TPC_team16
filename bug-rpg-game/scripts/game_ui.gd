@@ -4,8 +4,8 @@ signal item_toast_finished
 
 const SHOWN_Y := 6.0
 const HIDDEN_Y := -34.0
-const BUG_HOLD_TIME := 2.5
-const ITEM_HOLD_TIME := 1.2
+const ITEM_HOLD_TIME := 1.5
+const ITEM_DIM_ALPHA := 0.5
 const TITLE_SCENE := "res://scenes/title.tscn"
 # この group に入っているシーン（タイトル画面など）では Esc メニューを開かない
 const NO_PAUSE_GROUP := "no_pause_menu"
@@ -24,28 +24,29 @@ const ITEM_ICONS := {
 @onready var _bug_button: Button = $PauseMenu/Menu/BugButton
 @onready var _exit_button: Button = $PauseMenu/Menu/ExitButton
 @onready var _bug_book: Control = $PauseMenu/BugBook
-@onready var _discovery: Control = $Discovery
-@onready var _discovery_icon: Control = $Discovery/Icon
+@onready var _item_dim: ColorRect = $ItemDim
 @onready var _item_get: Control = $ItemGet
 @onready var _item_icon: PixelIcon = $ItemGet/Icon
 @onready var _item_text: Label = $ItemGet/Text
 
-var _tweens: Dictionary = {}
+var _item_tween: Tween
+var _item_showing := false
+var _was_paused := false
 
 
 func _ready() -> void:
 	_pause_menu.visible = false
+	_item_dim.visible = false
 	_title_button.pressed.connect(_go_to_title)
 	_resume_button.pressed.connect(_set_paused.bind(false))
 	_bug_button.pressed.connect(_open_bug_book)
 	_exit_button.pressed.connect(get_tree().quit)
 	_bug_book.closed.connect(_close_bug_book)
-	BugRegistry.bug_discovered.connect(_on_bug_discovered)
 	Inventory.item_added.connect(_on_item_added)
 
 
 func _input(event: InputEvent) -> void:
-	if TextPrompt.is_open():
+	if TextPrompt.is_open() or _item_showing:
 		return
 	if event.is_action_pressed("pause_menu"):
 		var scene := get_tree().current_scene
@@ -84,11 +85,7 @@ func _close_bug_book() -> void:
 	_bug_button.grab_focus()
 
 
-func _on_bug_discovered(id: String) -> void:
-	print("バグを発見！ (%s)" % id)
-	_play_banner(_discovery, _discovery_icon, BUG_HOLD_TIME)
-
-
+# アイテム獲得の演出。演出の間はゲーム内の時間を止め、画面を暗くして、獲得したことをはっきり見せる
 func _on_item_added(id: String) -> void:
 	_item_text.text = Inventory.acquire_message(id)
 	var source: PixelIcon = ITEM_ICONS.get(id, KEY_ICON).new()
@@ -96,22 +93,31 @@ func _on_item_added(id: String) -> void:
 	_item_icon.colors = source.colors
 	_item_icon.queue_redraw()
 	source.free()
-	var tween := _play_banner(_item_get, _item_icon, ITEM_HOLD_TIME)
-	tween.finished.connect(item_toast_finished.emit)
+
+	if not _item_showing:
+		_was_paused = get_tree().paused
+	_item_showing = true
+	get_tree().paused = true
+	if _item_tween:
+		_item_tween.kill()
+
+	_item_dim.visible = true
+	_item_dim.color.a = 0.0
+	_item_get.position.y = HIDDEN_Y
+	_item_icon.scale = Vector2.ZERO
+	_item_tween = create_tween()
+	_item_tween.tween_property(_item_dim, "color:a", ITEM_DIM_ALPHA, 0.2)
+	_item_tween.tween_property(_item_get, "position:y", SHOWN_Y, 0.3)
+	_item_tween.tween_property(_item_icon, "scale", Vector2(1.4, 1.4), 0.15)
+	_item_tween.tween_property(_item_icon, "scale", Vector2.ONE, 0.1)
+	_item_tween.tween_interval(ITEM_HOLD_TIME)
+	_item_tween.tween_property(_item_get, "position:y", HIDDEN_Y, 0.3)
+	_item_tween.parallel().tween_property(_item_dim, "color:a", 0.0, 0.3)
+	_item_tween.finished.connect(_on_item_toast_done)
 
 
-func _play_banner(banner: Control, icon: Control, hold: float) -> Tween:
-	for other: Control in _tweens:
-		_tweens[other].kill()
-		other.position.y = HIDDEN_Y
-	_tweens.clear()
-	banner.position.y = HIDDEN_Y
-	icon.scale = Vector2.ZERO
-	var tween := create_tween()
-	tween.tween_property(banner, "position:y", SHOWN_Y, 0.3)
-	tween.tween_property(icon, "scale", Vector2(1.4, 1.4), 0.15)
-	tween.tween_property(icon, "scale", Vector2.ONE, 0.1)
-	tween.tween_interval(hold)
-	tween.tween_property(banner, "position:y", HIDDEN_Y, 0.3)
-	_tweens[banner] = tween
-	return tween
+func _on_item_toast_done() -> void:
+	_item_dim.visible = false
+	_item_showing = false
+	get_tree().paused = _was_paused
+	item_toast_finished.emit()
