@@ -1,8 +1,9 @@
 extends Control
 
-# タイトル画面（簡易版）。「試練の間に入る」で第一層へ進む。「ゲームを終了」で終了。「設定」と「BOSS」は準備中
+# タイトル画面（簡易版）。「試練の間に入る」で第一層へ、「BOSS」でボス戦へ進む。「ゲームを終了」で終了。「設定」は準備中
 
 const FIRST_FLOOR := "res://scenes/trial_floor_1.tscn"
+const BOSS_BATTLE := "res://scenes/boss_battle.tscn"
 
 @onready var _enter_button: Button = $Menu/EnterButton
 @onready var _settings_button: Button = $Menu/SettingsButton
@@ -16,7 +17,7 @@ func _ready() -> void:
 	_enter_button.pressed.connect(ViewSwitcher.go_to.bind(FIRST_FLOOR))
 	_settings_button.pressed.connect(_show_message.bind("設定は準備中です"))
 	_quit_button.pressed.connect(get_tree().quit)
-	_boss_button.pressed.connect(_show_message.bind("ボス戦は準備中です"))
+	_boss_button.pressed.connect(ViewSwitcher.go_to.bind(BOSS_BATTLE))
 	_enter_button.grab_focus()
 
 

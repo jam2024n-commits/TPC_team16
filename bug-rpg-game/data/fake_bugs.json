@@ -79,6 +79,19 @@
       "note": "方針変更後（試練の間）の仕様。「端だと思っていたものに、実はまだ奥があった」という体験を作るためのもの"
     },
     {
+      "id": "boss_bullet_clip",
+      "title": "ボス戦で、しゃがみ＋ダッシュ中に黄色い球をすり抜ける",
+      "files": ["scripts/boss_player.gd", "scripts/boss_battle.gd"],
+      "trigger": "ボス戦で、Ctrl（しゃがみ）＋Shift（ダッシュ）＋WASD のダッシュ中に黄色い球と重なる",
+      "effect": "黄色い球の当たり判定が無効になり、隙間のない正方形の一斉射撃を抜けられる（赤い球は抜けられない）",
+      "requires": ["wall_clip"],
+      "route": "bug",
+      "stage": "boss_battle",
+      "hint": "黄色い魔法陣のあとの一斉射撃は、隙間がなく普通にはよけられない",
+      "discovery": "undetectable",
+      "note": "方針変更後（ボス戦）の仕様。すり抜けられる時間 0.3秒、次に使えるまで 0.5秒（前回のシューティングと同じ）"
+    },
+    {
       "id": "password_debug",
       "title": "消し忘れのデバッグ用合言葉で扉が誤作動する",
       "files": ["scripts/password_door.gd"],

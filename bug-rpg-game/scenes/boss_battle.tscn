@@ -1,0 +1,86 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/boss_battle.gd" id="1_battle"]
+[ext_resource type="PackedScene" path="res://scenes/trial_border.tscn" id="2_border"]
+[ext_resource type="Script" path="res://scripts/boss_sprite.gd" id="3_boss"]
+[ext_resource type="PackedScene" path="res://scenes/boss_player.tscn" id="4_player"]
+
+[node name="BossBattle" type="Node2D"]
+script = ExtResource("1_battle")
+
+[node name="Border" parent="." instance=ExtResource("2_border")]
+
+[node name="CircleLayer" type="Node2D" parent="."]
+
+[node name="Boss" type="AnimatedSprite2D" parent="."]
+position = Vector2(240, 135)
+script = ExtResource("3_boss")
+
+[node name="Player" parent="." instance=ExtResource("4_player")]
+position = Vector2(240, 225)
+
+[node name="BulletLayer" type="Node2D" parent="."]
+
+[node name="Hud" type="CanvasLayer" parent="."]
+layer = 4
+
+[node name="HpLabel" type="Label" parent="Hud"]
+offset_left = 18.0
+offset_top = 15.0
+offset_right = 138.0
+offset_bottom = 33.0
+theme_override_font_sizes/font_size = 12
+text = "HP"
+
+[node name="GameOver" type="CanvasLayer" parent="."]
+layer = 6
+
+[node name="Root" type="Control" parent="GameOver"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="GameOver/Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Title" type="Label" parent="GameOver/Root"]
+layout_mode = 0
+offset_top = 90.0
+offset_right = 480.0
+offset_bottom = 126.0
+theme_override_colors/font_color = Color(1, 0.35, 0.3, 1)
+theme_override_font_sizes/font_size = 24
+text = "GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Buttons" type="HBoxContainer" parent="GameOver/Root"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 150.0
+offset_right = 360.0
+offset_bottom = 174.0
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="RetryButton" type="Button" parent="GameOver/Root/Buttons"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "リトライ"
+
+[node name="TitleButton" type="Button" parent="GameOver/Root/Buttons"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "タイトルに戻る"
