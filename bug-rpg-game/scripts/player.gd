@@ -66,6 +66,12 @@ func _physics_process(delta: float) -> void:
 		_dash_left = 0.0
 
 
+# FAKE_BUG: wall_clip
+# しゃがみ中にダッシュしている間（壁抜けできる状態）
+func is_clipping() -> bool:
+	return _crouching and _dash_left > 0.0
+
+
 func _update_crouch() -> void:
 	var wants_crouch := Input.is_action_pressed("crouch")
 	if not _crouching and wants_crouch and is_on_floor():

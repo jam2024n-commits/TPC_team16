@@ -1,0 +1,94 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/trial_floor_2.gd" id="1_floor"]
+[ext_resource type="PackedScene" path="res://scenes/trial_border.tscn" id="2_border"]
+[ext_resource type="PackedScene" path="res://scenes/block.tscn" id="3_block"]
+[ext_resource type="PackedScene" path="res://scenes/sign.tscn" id="4_sign"]
+[ext_resource type="PackedScene" path="res://scenes/orb.tscn" id="5_orb"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="6_player"]
+[ext_resource type="PackedScene" path="res://scenes/exit_door.tscn" id="7_door"]
+
+[node name="TrialFloor2" type="Node2D"]
+script = ExtResource("1_floor")
+floor_number = 2
+item_id = "mage_robe"
+next_scene = "res://scenes/trial_room.tscn"
+
+[node name="Border" parent="." instance=ExtResource("2_border")]
+right_clippable = true
+
+[node name="Step" parent="." instance=ExtResource("3_block")]
+position = Vector2(72, 156)
+size = Vector2(20, 16)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="ClipWall1" parent="." instance=ExtResource("3_block")]
+position = Vector2(112, 8)
+collision_layer = 2
+size = Vector2(8, 164)
+color = Color(0.6, 0.5, 0.7, 1)
+
+[node name="JumpBlock" parent="." instance=ExtResource("3_block")]
+position = Vector2(160, 148)
+size = Vector2(24, 24)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="LowCeiling" parent="." instance=ExtResource("3_block")]
+position = Vector2(206, 8)
+size = Vector2(30, 150)
+color = Color(0.5, 0.4, 0.4, 1)
+
+[node name="ClipWall2" parent="." instance=ExtResource("3_block")]
+position = Vector2(250, 8)
+collision_layer = 2
+size = Vector2(8, 164)
+color = Color(0.6, 0.5, 0.7, 1)
+
+[node name="Sign" parent="." instance=ExtResource("4_sign")]
+position = Vector2(44, 172)
+text = "Tips:ボタンを組み合せると壁を抜けられるかも...?"
+
+[node name="Beyond" type="Node2D" parent="."]
+
+[node name="Ceiling" parent="Beyond" instance=ExtResource("3_block")]
+position = Vector2(320, 0)
+size = Vector2(320, 8)
+color = Color(0.3, 0.3, 0.35, 1)
+
+[node name="Floor" parent="Beyond" instance=ExtResource("3_block")]
+position = Vector2(320, 172)
+size = Vector2(320, 8)
+color = Color(0.3, 0.3, 0.35, 1)
+
+[node name="End" parent="Beyond" instance=ExtResource("3_block")]
+position = Vector2(632, 8)
+size = Vector2(8, 164)
+color = Color(0.3, 0.3, 0.35, 1)
+
+[node name="BlockA" parent="Beyond" instance=ExtResource("3_block")]
+position = Vector2(400, 148)
+size = Vector2(24, 24)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="BlockB" parent="Beyond" instance=ExtResource("3_block")]
+position = Vector2(470, 132)
+size = Vector2(24, 40)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="Orb" parent="." instance=ExtResource("5_orb")]
+position = Vector2(560, 160)
+
+[node name="ExitDoor" parent="." instance=ExtResource("7_door")]
+position = Vector2(604, 172)
+
+[node name="Player" parent="." instance=ExtResource("6_player")]
+position = Vector2(24, 172)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+limit_left = 0
+limit_top = 0
+limit_right = 320
+limit_bottom = 180
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 6.0

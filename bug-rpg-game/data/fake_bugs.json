@@ -66,6 +66,19 @@
       "note": "ボスを倒すとアイテム castle_door_key（仮。プロンプト.mdの「開かずの扉」を想定）を入手して元のステージへ戻る。発見数に数えるかは仮"
     },
     {
+      "id": "boundary_clip",
+      "title": "試練の間の右の境界を壁抜けして、その先へ出る",
+      "files": ["scripts/trial_border.gd", "scripts/trial_floor.gd", "scripts/trial_floor_2.gd"],
+      "trigger": "第二層で、右の境界（壁抜けできる壁と同じ色）をしゃがみ＋ダッシュで抜ける",
+      "effect": "境界の外に続く場所に出て、横スクロールが始まる。先にオーブ（魔導士のローブ）がある。壁抜け中は右の境界に触れても最初に戻されない",
+      "requires": ["wall_clip"],
+      "route": "bug",
+      "stage": "trial_floor_2",
+      "hint": "右の境界だけ、壁抜けできる壁と同じ色になっている",
+      "discovery": "undetectable",
+      "note": "方針変更後（試練の間）の仕様。「端だと思っていたものに、実はまだ奥があった」という体験を作るためのもの"
+    },
+    {
       "id": "password_debug",
       "title": "消し忘れのデバッグ用合言葉で扉が誤作動する",
       "files": ["scripts/password_door.gd"],

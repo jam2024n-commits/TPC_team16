@@ -6,9 +6,20 @@ const SHOWN_Y := 6.0
 const HIDDEN_Y := -34.0
 const BUG_HOLD_TIME := 2.5
 const ITEM_HOLD_TIME := 1.2
+const TITLE_SCENE := "res://scenes/title.tscn"
+# この group に入っているシーン（タイトル画面など）では Esc メニューを開かない
+const NO_PAUSE_GROUP := "no_pause_menu"
+const KEY_ICON := preload("res://scripts/key_icon.gd")
+const ORB_ICON := preload("res://scripts/orb_icon.gd")
+const ITEM_ICONS := {
+	"castle_door_key": KEY_ICON,
+	"beginning_staff": ORB_ICON,
+	"mage_robe": ORB_ICON,
+}
 
 @onready var _pause_menu: Control = $PauseMenu
 @onready var _menu: Control = $PauseMenu/Menu
+@onready var _title_button: Button = $PauseMenu/Menu/TitleButton
 @onready var _resume_button: Button = $PauseMenu/Menu/ResumeButton
 @onready var _bug_button: Button = $PauseMenu/Menu/BugButton
 @onready var _exit_button: Button = $PauseMenu/Menu/ExitButton
@@ -16,7 +27,7 @@ const ITEM_HOLD_TIME := 1.2
 @onready var _discovery: Control = $Discovery
 @onready var _discovery_icon: Control = $Discovery/Icon
 @onready var _item_get: Control = $ItemGet
-@onready var _item_icon: Control = $ItemGet/Icon
+@onready var _item_icon: PixelIcon = $ItemGet/Icon
 @onready var _item_text: Label = $ItemGet/Text
 
 var _tweens: Dictionary = {}
@@ -24,6 +35,7 @@ var _tweens: Dictionary = {}
 
 func _ready() -> void:
 	_pause_menu.visible = false
+	_title_button.pressed.connect(_go_to_title)
 	_resume_button.pressed.connect(_set_paused.bind(false))
 	_bug_button.pressed.connect(_open_bug_book)
 	_exit_button.pressed.connect(get_tree().quit)
@@ -36,6 +48,9 @@ func _input(event: InputEvent) -> void:
 	if TextPrompt.is_open():
 		return
 	if event.is_action_pressed("pause_menu"):
+		var scene := get_tree().current_scene
+		if scene and scene.is_in_group(NO_PAUSE_GROUP):
+			return
 		if _bug_book.visible:
 			_close_bug_book()
 		else:
@@ -49,7 +64,12 @@ func _set_paused(paused: bool) -> void:
 	_bug_book.visible = false
 	_menu.visible = true
 	if paused:
-		_resume_button.grab_focus()
+		_title_button.grab_focus()
+
+
+func _go_to_title() -> void:
+	_set_paused(false)
+	ViewSwitcher.go_to(TITLE_SCENE)
 
 
 func _open_bug_book() -> void:
@@ -70,7 +90,12 @@ func _on_bug_discovered(id: String) -> void:
 
 
 func _on_item_added(id: String) -> void:
-	_item_text.text = "%sを手に入れた！" % Inventory.display_name(id)
+	_item_text.text = Inventory.acquire_message(id)
+	var source: PixelIcon = ITEM_ICONS.get(id, KEY_ICON).new()
+	_item_icon.pattern = source.pattern
+	_item_icon.colors = source.colors
+	_item_icon.queue_redraw()
+	source.free()
 	var tween := _play_banner(_item_get, _item_icon, ITEM_HOLD_TIME)
 	tween.finished.connect(item_toast_finished.emit)
 
