@@ -36,6 +36,17 @@ offset_bottom = 37.5
 mouse_filter = 2
 script = ExtResource("4_key")
 
+[node name="IconImage" type="TextureRect" parent="ItemGet"]
+visible = false
+layout_mode = 0
+offset_left = 9.0
+offset_top = 3.0
+offset_right = 45.0
+offset_bottom = 39.0
+pivot_offset = Vector2(18, 18)
+mouse_filter = 2
+expand_mode = 1
+
 [node name="Text" type="Label" parent="ItemGet"]
 layout_mode = 0
 offset_left = 57.0

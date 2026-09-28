@@ -8,6 +8,7 @@ extends Node2D
 
 const MAGIC_CIRCLE := preload("res://scripts/magic_circle.gd")
 const TITLE_SCENE := "res://scenes/title.tscn"
+const BGM := preload("res://assets/BGM/BOSS/Battle-Vampire_loop.ogg")
 
 const ARENA := Rect2(12, 12, 456, 246)
 const PLAYER_HP := 5
@@ -80,6 +81,7 @@ var _bullets: Array[Dictionary] = []  # {pos, vel, yellow, frame}（frame はア
 
 
 func _ready() -> void:
+	Bgm.play_music(BGM)
 	_game_over.visible = false
 	_retry_button.pressed.connect(ViewSwitcher.go_to.bind(scene_file_path))
 	_title_button.pressed.connect(ViewSwitcher.go_to.bind(TITLE_SCENE))

@@ -4,6 +4,7 @@ extends Control
 
 const FIRST_FLOOR := "res://scenes/trial_floor_1.tscn"
 const BOSS_BATTLE := "res://scenes/boss_battle.tscn"
+const BGM := preload("res://assets/BGM/title/Epilogue_loop.ogg")
 
 @onready var _enter_button: Button = $Menu/EnterButton
 @onready var _settings_button: Button = $Menu/SettingsButton
@@ -14,6 +15,7 @@ const BOSS_BATTLE := "res://scenes/boss_battle.tscn"
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	Bgm.play_music(BGM)
 	_enter_button.pressed.connect(ViewSwitcher.go_to.bind(FIRST_FLOOR))
 	_settings_button.pressed.connect(_show_message.bind("設定は準備中です"))
 	_quit_button.pressed.connect(get_tree().quit)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/trial_floor_3.gd" id="1_floor"]
 [ext_resource type="PackedScene" path="res://scenes/trial_border.tscn" id="2_border"]
@@ -8,12 +8,16 @@
 [ext_resource type="PackedScene" path="res://scenes/orb.tscn" id="6_orb"]
 [ext_resource type="PackedScene" path="res://scenes/exit_door.tscn" id="7_door"]
 [ext_resource type="PackedScene" path="res://scenes/trial_player.tscn" id="8_player"]
+[ext_resource type="PackedScene" path="res://scenes/trial_background.tscn" id="20_background"]
+[ext_resource type="Texture2D" path="res://assets/shield/buckler.png" id="21_item"]
 
 [node name="TrialFloor3" type="Node2D"]
 script = ExtResource("1_floor")
 floor_number = 3
 item_id = "ancient_buckler"
 next_scene = "res://scenes/ending.tscn"
+
+[node name="Background" parent="." instance=ExtResource("20_background")]
 
 [node name="Border" parent="." instance=ExtResource("2_border")]
 top_breakable = true
@@ -118,6 +122,7 @@ text = "Tips:ちょっと疲れたからしゃがもうかな..."
 
 [node name="Orb" parent="." instance=ExtResource("6_orb")]
 position = Vector2(309, -348)
+texture = ExtResource("21_item")
 
 [node name="ExitDoor" parent="." instance=ExtResource("7_door")]
 position = Vector2(440, -330)

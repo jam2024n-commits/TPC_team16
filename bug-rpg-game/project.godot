@@ -25,6 +25,7 @@ Inventory="*res://scripts/inventory.gd"
 ViewSwitcher="*res://scenes/view_switcher.tscn"
 WorldState="*res://scripts/world_state.gd"
 TextPrompt="*res://scenes/text_prompt.tscn"
+Bgm="*res://scripts/bgm_player.gd"
 
 [display]
 

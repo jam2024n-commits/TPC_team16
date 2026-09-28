@@ -8,5 +8,6 @@ const TITLE_SCENE := "res://scenes/title.tscn"
 
 
 func _ready() -> void:
+	Bgm.stop_music()
 	_title_button.pressed.connect(ViewSwitcher.go_to.bind(TITLE_SCENE))
 	_title_button.grab_focus()

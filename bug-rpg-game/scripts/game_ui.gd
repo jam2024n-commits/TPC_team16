@@ -17,6 +17,11 @@ const ITEM_ICONS := {
 	"mage_robe": ORB_ICON,
 	"ancient_buckler": ORB_ICON,
 }
+# 画像があるアイテムは、ITEM_ICONS より優先して画像を表示する（48x48 を 36 で表示。フルスクリーン（4倍）でドットがちょうど3x3）
+const ITEM_IMAGES := {
+	"beginning_staff": preload("res://assets/stick/staff.png"),
+	"ancient_buckler": preload("res://assets/shield/buckler.png"),
+}
 
 @onready var _pause_menu: Control = $PauseMenu
 @onready var _menu: Control = $PauseMenu/Menu
@@ -28,6 +33,7 @@ const ITEM_ICONS := {
 @onready var _item_dim: ColorRect = $ItemDim
 @onready var _item_get: Control = $ItemGet
 @onready var _item_icon: PixelIcon = $ItemGet/Icon
+@onready var _item_image: TextureRect = $ItemGet/IconImage
 @onready var _item_text: Label = $ItemGet/Text
 
 var _item_tween: Tween
@@ -89,11 +95,18 @@ func _close_bug_book() -> void:
 # アイテム獲得の演出。演出の間はゲーム内の時間を止め、画面を暗くして、獲得したことをはっきり見せる
 func _on_item_added(id: String) -> void:
 	_item_text.text = Inventory.acquire_message(id)
-	var source: PixelIcon = ITEM_ICONS.get(id, KEY_ICON).new()
-	_item_icon.pattern = source.pattern
-	_item_icon.colors = source.colors
-	_item_icon.queue_redraw()
-	source.free()
+	var image: Texture2D = ITEM_IMAGES.get(id)
+	_item_image.visible = image != null
+	_item_icon.visible = image == null
+	if image:
+		_item_image.texture = image
+	else:
+		var source: PixelIcon = ITEM_ICONS.get(id, KEY_ICON).new()
+		_item_icon.pattern = source.pattern
+		_item_icon.colors = source.colors
+		_item_icon.queue_redraw()
+		source.free()
+	var icon: Control = _item_image if image else _item_icon
 
 	if not _item_showing:
 		_was_paused = get_tree().paused
@@ -105,12 +118,12 @@ func _on_item_added(id: String) -> void:
 	_item_dim.visible = true
 	_item_dim.color.a = 0.0
 	_item_get.position.y = HIDDEN_Y
-	_item_icon.scale = Vector2.ZERO
+	icon.scale = Vector2.ZERO
 	_item_tween = create_tween()
 	_item_tween.tween_property(_item_dim, "color:a", ITEM_DIM_ALPHA, 0.2)
 	_item_tween.tween_property(_item_get, "position:y", SHOWN_Y, 0.3)
-	_item_tween.tween_property(_item_icon, "scale", Vector2(1.4, 1.4), 0.15)
-	_item_tween.tween_property(_item_icon, "scale", Vector2.ONE, 0.1)
+	_item_tween.tween_property(icon, "scale", Vector2(1.4, 1.4), 0.15)
+	_item_tween.tween_property(icon, "scale", Vector2.ONE, 0.1)
 	_item_tween.tween_interval(ITEM_HOLD_TIME)
 	_item_tween.tween_property(_item_get, "position:y", HIDDEN_Y, 0.3)
 	_item_tween.parallel().tween_property(_item_dim, "color:a", 0.0, 0.3)

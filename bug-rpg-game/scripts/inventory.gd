@@ -6,7 +6,7 @@ const DISPLAY_NAMES := {
 	"castle_door_key": "カギ",
 	"beginning_staff": "はじまりのつえ",
 	"mage_robe": "魔導士のローブ",
-	"ancient_buckler": "いにしえのバックラー",
+	"ancient_buckler": "風神の盾",
 }
 # 試練の間のアイテムは『「〇〇」を獲得した！』と出す
 const TRIAL_ITEMS := ["beginning_staff", "mage_robe", "ancient_buckler"]

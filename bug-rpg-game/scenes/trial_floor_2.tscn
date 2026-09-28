@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/trial_floor_2.gd" id="1_floor"]
 [ext_resource type="PackedScene" path="res://scenes/trial_border.tscn" id="2_border"]
@@ -7,12 +7,15 @@
 [ext_resource type="PackedScene" path="res://scenes/orb.tscn" id="5_orb"]
 [ext_resource type="PackedScene" path="res://scenes/trial_player.tscn" id="6_player"]
 [ext_resource type="PackedScene" path="res://scenes/exit_door.tscn" id="7_door"]
+[ext_resource type="PackedScene" path="res://scenes/trial_background.tscn" id="20_background"]
 
 [node name="TrialFloor2" type="Node2D"]
 script = ExtResource("1_floor")
 floor_number = 2
 item_id = "mage_robe"
 next_scene = "res://scenes/trial_floor_3.tscn"
+
+[node name="Background" parent="." instance=ExtResource("20_background")]
 
 [node name="Border" parent="." instance=ExtResource("2_border")]
 right_clippable = true

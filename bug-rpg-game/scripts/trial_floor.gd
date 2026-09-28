@@ -9,6 +9,7 @@ const TITLE_HOLD := 1.0
 const TITLE_FADE := 0.5
 const TITLE_FONT_SIZE := 18
 const KANJI_DIGITS := ["", "一", "二", "三", "四", "五", "六", "七", "八", "九"]
+const BGM := preload("res://assets/BGM/shiren/village.mp3")
 
 @export var floor_number := 1
 @export var item_id := ""
@@ -23,6 +24,7 @@ var _door = null  # exit_door.gd
 
 
 func _ready() -> void:
+	Bgm.play_music(BGM)
 	var orb := get_node_or_null("Orb")
 	if orb:
 		orb.collected.connect(_on_orb_collected)
