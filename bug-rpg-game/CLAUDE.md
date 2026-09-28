@@ -48,11 +48,13 @@
 - 敵は当面置かない
 - タイトル画面：中央にタイトル（文字）とボタン（「試練の間に入る」「アイテム一覧」「設定」「ゲームを終了」）。右下に「BOSS」アイコン（ボスへの挑戦）。簡易的なものでよい
   - アイテム一覧（`scenes/item_list.tscn`、`scripts/item_list.gd`）：試練の間のアイテムを順に並べる。持っているものは絵と名前、持っていないものは影（`shaders/silhouette.gdshader`）と「？？？」。「閉じる」か Esc で閉じる
-- アイテムの保存：`Inventory` が試練の間のアイテムだけを `user://save.cfg`（Windows では `%APPDATA%/Godot/app_userdata/Bug_Rpg_Game/save.cfg`）に記録し、起動時に読み込む。消す手段はまだない（ファイルを消せば最初から）。テストでアイテムを取ると記録されるので、テストの前に `save.cfg`・`settings.cfg` を退避し、後で元に戻すこと（遊んだ記録が入っていることがある）
+- アイテムの保存：`Inventory` が試練の間のアイテムだけを `user://save.cfg`（Windows では `%APPDATA%/Godot/app_userdata/Bug_Rpg_Game/save.cfg`）に記録し、起動時に読み込む。タイトルの設定の「全データリセット」で消せる。テストでアイテムを取ると記録されるので、テストの前に `save.cfg`・`settings.cfg` を退避し、後で元に戻すこと（遊んだ記録が入っていることがある）
 - Esc メニュー：タイトルへ戻るボタンと「設定」。戻るボタンは、試練の間（group `trial_floor`）では「試練の間を出る」、それ以外では「タイトルへ」と表示する（押したときの動きはどちらもタイトルへ）。「設定」はタイトルと同じ設定画面を開く（設定画面を開いている間の Esc は設定画面だけを閉じる）
 - 設定（タイトルと Esc メニューの「設定」、`scenes/settings_menu.tscn`）：ミュート（切り替え）と音量（スライダー、0〜100%、5%きざみ）。変えるとすぐ全体の音量（Master バス）に反映し、Autoload `Settings`（`scripts/settings.gd`）が `user://settings.cfg` に記録する
+  - タイトルの設定だけ「全データリセット」ボタンを出す（`settings_menu.gd` の `show_reset`）。押すと確認（最初に選ばれているのは「やめる」）を出し、「消す」で獲得したアイテムと音の設定を最初の状態に戻し、`save.cfg`・`settings.cfg` も消す
 - 待機モーション：主人公（試練の間・ボス戦）は、1秒以上動かないと `assets/characters/player/taiki.png`（32x32 のコマが横に2枚。1枚目は立ち絵と同じ）を0.5秒ごとに交互に表示する。試練の間は床の上で立っているとき、ボス戦は移動キーを押していないとき。しゃがむ・動くとすぐ戻る。`player.gd`・`boss_player.gd` の `idle_texture` を設定したものだけ（方針変更前のシーンの主人公には出ない）
 - 試練の間の壁や障害物（`block.gd` を使うもの。境界も含む）には、内側のふちに1ピクセルの枠線を付ける（`trial_floor.gd` が `enable_outline` を呼ぶ）。色は `shaders/block_outline.gdshader`（設定は `shaders/block_outline.tres`）が、枠線の真後ろの背景の明るさで決める（暗いところは白っぽく、明るいところは黒っぽく）。背景の細かい模様でちらつかないよう、ぼかした背景（ミップマップ）で明るさを見る。方針変更前のシーンには付けない
+- 操作（試練の間）：ジャンプは W・Space・矢印の上。しゃがみは S・矢印の下
 - 第一層：基本操作の看板（左右移動・しゃがみ・ジャンプ・ダッシュ）、少しの障害物、右の境界付近にオーブ（「はじまりのつえ」）
 - 第二層：新しい操作は壁抜け（しゃがみ＋ダッシュ）
   - 抜けられる壁は2か所ほどで、色を変える。右の境界だけ、抜けられる壁と同じ色にする
@@ -90,7 +92,7 @@
   - ボスの HP が 0 になると、弾を消してボスが消え、「GAME CLEAR」と表示するだけ（戻るときは Esc メニューの「タイトルへ」）
 - 保留・未決定：GAME CLEAR のあと、シナリオとの関係、進行状況の扱い（入るたびに第一層からか など）、設定画面の音以外の項目、エンディングの中身（今は第三層クリアで仮のエンディング）
 - 実装済み（2026-09-28）：
-  - タイトル（`scenes/title.tscn`、起動時の画面）。タイトル名は仮。「設定」は押すと「準備中です」と出るだけ。「BOSS」でボス戦へ。タイトルでは Esc メニューを開かない（シーンの group `no_pause_menu`）
+  - タイトル（`scenes/title.tscn`、起動時の画面）。背景は `assets/background/title/` の正方形の絵を 16:9 に切ったもの（`title_background.png`。扉全体と足元の草地が入る高さ。文字が読めるよう少し暗くしている）。タイトル名は「試練の間」で、行書のフォント（`assets/fonts/KouzanGyousho.ttf`、衡山毛筆フォント行書。出どころと利用条件は `assets/fonts/README.md`）で表示する。「BOSS」でボス戦へ。タイトルでは Esc メニューを開かない（シーンの group `no_pause_menu`）
   - 境界 `scenes/trial_border.tscn`（太さ12ピクセル）、オーブ `scenes/orb.tscn`、各層の共通処理 `scripts/trial_floor.gd`（層の番号・アイテムID・次の層を設定）
   - 第一層 `scenes/trial_floor_1.tscn`（アイテムID `beginning_staff`）。障害物はジャンプで越える段差・しゃがんで通る低い天井・高めの段差
   - 第二層 `scenes/trial_floor_2.tscn`（`scripts/trial_floor_2.gd`、アイテムID `ancient_buckler`）。1画面目の形（元のイメージは `docs/イメージ.png`）：

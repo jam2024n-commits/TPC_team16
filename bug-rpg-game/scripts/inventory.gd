@@ -39,6 +39,13 @@ func add_item(id: String) -> void:
 	item_added.emit(id)
 
 
+# 全データリセット（タイトルの設定）：持っているアイテムを全部なくし、記録も消す
+func reset() -> void:
+	_items = {}
+	if FileAccess.file_exists(SAVE_PATH):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE_PATH))
+
+
 func has_item(id: String) -> bool:
 	return _items.has(id)
 

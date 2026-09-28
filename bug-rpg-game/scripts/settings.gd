@@ -30,6 +30,15 @@ func set_muted(value: bool) -> void:
 	_save()
 
 
+# 全データリセット（タイトルの設定）：最初の値に戻し、記録も消す
+func reset() -> void:
+	volume = DEFAULT_VOLUME
+	muted = false
+	_apply()
+	if FileAccess.file_exists(SETTINGS_PATH):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(SETTINGS_PATH))
+
+
 func _apply() -> void:
 	var bus := AudioServer.get_bus_index("Master")
 	AudioServer.set_bus_volume_db(bus, linear_to_db(volume))

@@ -8,6 +8,7 @@ extends SceneTree
 #   各マスの色を1つ読み取って等倍のドット絵に戻す（方眼の点は消える）。チャージ攻撃のコマは横に並べて1枚にする
 # - 試練の間の背景：画面の横幅（480）に合わせて縮める。上下は表示するときに切る
 # - ボス戦の背景：画面と同じ 16:9 に切る
+# - タイトルの背景：画面と同じ 16:9 に切る（扉全体と足元の草地が入る高さ）
 # 画像が差し替わったら、このツールをもう一度実行すればよい
 
 const BEAD_CELL := 30
@@ -38,6 +39,10 @@ const TRIAL_BACKGROUND := "res://assets/background/shiren/trial_background.png"
 # 縮めるのは表示するとき（boss_battle.tscn の Background。滑らかに縮める）
 const BOSS_BACKGROUND_SOURCE := "res://assets/background/BOSS/Gemini_Generated_Image_ao04d9ao04d9ao04.jpg"
 const BOSS_BACKGROUND := "res://assets/background/BOSS/boss_background.png"
+# タイトルの背景（正方形の1枚絵）。16:9 に切るときの縦の位置（0＝一番上、0.5＝真ん中、1＝一番下）
+const TITLE_BACKGROUND_SOURCE := "res://assets/background/title/ChatGPT_Image_2026928_23_38_53.png"
+const TITLE_BACKGROUND := "res://assets/background/title/title_background.png"
+const TITLE_BACKGROUND_ANCHOR_Y := 0.45
 const SCREEN_WIDTH := 480
 const SCREEN_HEIGHT := 270
 
@@ -51,6 +56,7 @@ func _initialize() -> void:
 	background.resize(SCREEN_WIDTH, height, Image.INTERPOLATE_CUBIC)
 	_save(background, TRIAL_BACKGROUND)
 	_save(_crop_to_screen_ratio(_load(BOSS_BACKGROUND_SOURCE)), BOSS_BACKGROUND)
+	_save(_crop_to_screen_ratio(_load(TITLE_BACKGROUND_SOURCE), TITLE_BACKGROUND_ANCHOR_Y), TITLE_BACKGROUND)
 	quit()
 
 
@@ -66,17 +72,18 @@ func _sheet(sources: Array) -> Image:
 	return img
 
 
-func _crop_to_screen_ratio(src: Image) -> Image:
+# 画面と同じ 16:9 に切る。anchor は余る方向のどこを残すか（0.5 なら真ん中）
+func _crop_to_screen_ratio(src: Image, anchor := 0.5) -> Image:
 	var w := src.get_width()
 	var h := src.get_height()
 	var ratio := float(SCREEN_WIDTH) / SCREEN_HEIGHT
 	var crop := Rect2i(0, 0, w, h)
 	if float(w) / h > ratio:
 		crop.size.x = roundi(h * ratio)
-		crop.position.x = (w - crop.size.x) / 2
+		crop.position.x = int((w - crop.size.x) * anchor)
 	else:
 		crop.size.y = roundi(w / ratio)
-		crop.position.y = (h - crop.size.y) / 2
+		crop.position.y = int((h - crop.size.y) * anchor)
 	return src.get_region(crop)
 
 

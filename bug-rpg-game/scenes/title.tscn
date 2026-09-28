@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/title.gd" id="1_title"]
 [ext_resource type="Script" path="res://scripts/boss_icon.gd" id="2_boss"]
 [ext_resource type="PackedScene" path="res://scenes/item_list.tscn" id="3_items"]
 [ext_resource type="PackedScene" path="res://scenes/settings_menu.tscn" id="4_settings"]
+[ext_resource type="FontFile" path="res://assets/fonts/KouzanGyousho.ttf" id="5_title_font"]
+[ext_resource type="Texture2D" path="res://assets/background/title/title_background.png" id="6_bg"]
 
 [node name="Title" type="Control" groups=["no_pause_menu"]]
 layout_mode = 3
@@ -14,7 +16,8 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_title")
 
-[node name="Bg" type="ColorRect" parent="."]
+[node name="Bg" type="TextureRect" parent="."]
+texture_filter = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,15 +25,33 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.06, 0.06, 0.09, 1)
+texture = ExtResource("6_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Shade" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.35)
 
 [node name="TitleLabel" type="Label" parent="."]
 layout_mode = 0
-offset_top = 54.0
+offset_top = 30.0
 offset_right = 480.0
-offset_bottom = 90.0
-theme_override_font_sizes/font_size = 24
-text = "（タイトル未定）"
+offset_bottom = 99.0
+theme_override_colors/font_outline_color = Color(0.08, 0.08, 0.1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.6)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("5_title_font")
+theme_override_font_sizes/font_size = 48
+text = "試練の間"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -94,3 +115,4 @@ layout_mode = 1
 
 [node name="SettingsMenu" parent="." instance=ExtResource("4_settings")]
 layout_mode = 1
+show_reset = true
