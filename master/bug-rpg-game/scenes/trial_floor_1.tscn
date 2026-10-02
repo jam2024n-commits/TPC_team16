@@ -1,0 +1,48 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/trial_floor.gd" id="1_floor"]
+[ext_resource type="PackedScene" path="res://scenes/trial_border.tscn" id="2_border"]
+[ext_resource type="PackedScene" path="res://scenes/block.tscn" id="3_block"]
+[ext_resource type="PackedScene" path="res://scenes/sign.tscn" id="4_sign"]
+[ext_resource type="PackedScene" path="res://scenes/orb.tscn" id="5_orb"]
+[ext_resource type="PackedScene" path="res://scenes/trial_player.tscn" id="6_player"]
+[ext_resource type="PackedScene" path="res://scenes/trial_background.tscn" id="20_background"]
+[ext_resource type="Texture2D" path="res://assets/stick/staff.png" id="21_item"]
+
+[node name="TrialFloor1" type="Node2D"]
+script = ExtResource("1_floor")
+item_id = "beginning_staff"
+next_scene = "res://scenes/trial_floor_2.tscn"
+
+[node name="Background" parent="." instance=ExtResource("20_background")]
+
+[node name="Border" parent="." instance=ExtResource("2_border")]
+
+[node name="Step" parent="." instance=ExtResource("3_block")]
+position = Vector2(144, 234)
+size = Vector2(36, 24)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="LowCeiling" parent="." instance=ExtResource("3_block")]
+position = Vector2(225, 12)
+size = Vector2(48, 225)
+color = Color(0.5, 0.4, 0.4, 1)
+
+[node name="HighStep" parent="." instance=ExtResource("3_block")]
+position = Vector2(333, 216)
+size = Vector2(36, 42)
+color = Color(0.45, 0.5, 0.35, 1)
+
+[node name="Sign" parent="." instance=ExtResource("4_sign")]
+position = Vector2(72, 258)
+text = "A / D：左右移動
+W / Space：ジャンプ
+S：しゃがみ
+Shift：ダッシュ"
+
+[node name="Orb" parent="." instance=ExtResource("5_orb")]
+position = Vector2(438, 240)
+texture = ExtResource("21_item")
+
+[node name="Player" parent="." instance=ExtResource("6_player")]
+position = Vector2(36, 258)

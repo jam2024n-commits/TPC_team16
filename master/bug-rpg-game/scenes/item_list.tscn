@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/item_list.gd" id="1_list"]
+
+[node name="ItemList" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_list")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 135.0
+offset_top = 36.0
+offset_right = 345.0
+offset_bottom = 234.0
+color = Color(0.1, 0.1, 0.14, 1)
+
+[node name="Heading" type="Label" parent="Panel"]
+layout_mode = 0
+offset_top = 6.0
+offset_right = 210.0
+offset_bottom = 27.0
+theme_override_font_sizes/font_size = 15
+text = "アイテム一覧"
+horizontal_alignment = 1
+
+[node name="Rows" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 36.0
+offset_right = 186.0
+offset_bottom = 162.0
+theme_override_constants/separation = 6
+
+[node name="CloseButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 69.0
+offset_top = 168.0
+offset_right = 141.0
+offset_bottom = 189.0
+theme_override_font_sizes/font_size = 12
+text = "閉じる"

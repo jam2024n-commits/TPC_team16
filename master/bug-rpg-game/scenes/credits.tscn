@@ -1,0 +1,84 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/credits.gd" id="1_credits"]
+[ext_resource type="FontFile" path="res://assets/fonts/KouzanGyousho.ttf" id="2_font"]
+
+[node name="Credits" type="Control" groups=["no_pause_menu"]]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_credits")
+
+[node name="Bg" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Peace" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 1
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 30
+text = "世界は平和を取り戻した。"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Credits" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Credits"]
+layout_mode = 0
+offset_top = 48.0
+offset_right = 480.0
+offset_bottom = 111.0
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 1
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 44
+text = "試練の間"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Author" type="Label" parent="Credits"]
+layout_mode = 0
+offset_top = 126.0
+offset_right = 480.0
+offset_bottom = 147.0
+theme_override_font_sizes/font_size = 14
+text = "制作：YKR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Thanks" type="Label" parent="Credits"]
+layout_mode = 0
+offset_top = 162.0
+offset_right = 480.0
+offset_bottom = 228.0
+theme_override_colors/font_color = Color(0.8, 0.8, 0.85, 1)
+theme_override_constants/line_spacing = 4
+theme_override_font_sizes/font_size = 11
+text = "タイトル/ボス戦BGM：ユーフルカ https://youfulca.com/
+試練の間BGM：Music-Note.jp
+素材提供：ファントム"
+horizontal_alignment = 1
+vertical_alignment = 1

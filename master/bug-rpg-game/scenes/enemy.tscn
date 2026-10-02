@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_enemy"]
+[ext_resource type="Resource" path="res://data/enemies/slime.tres" id="2_data"]
+
+[node name="Enemy" type="Node2D"]
+script = ExtResource("1_enemy")
+data = ExtResource("2_data")
+
+[node name="Body" type="ColorRect" parent="."]
+offset_left = -8.0
+offset_top = -16.0
+offset_right = 8.0
+mouse_filter = 2
+color = Color(0.35, 0.75, 0.35, 1)

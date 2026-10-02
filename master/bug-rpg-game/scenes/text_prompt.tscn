@@ -1,0 +1,79 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/text_prompt.gd" id="1_prompt"]
+
+[node name="TextPrompt" type="CanvasLayer"]
+process_mode = 3
+layer = 12
+script = ExtResource("1_prompt")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Box" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -174.0
+offset_top = -84.0
+offset_right = 174.0
+offset_bottom = 84.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.06, 0.08, 0.06, 1)
+
+[node name="Panel" type="VBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -165.0
+offset_top = -75.0
+offset_right = 165.0
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="Root/Panel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+
+[node name="Log" type="Label" parent="Root/Panel"]
+custom_minimum_size = Vector2(330, 87)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+clip_text = true
+
+[node name="Input" type="LineEdit" parent="Root/Panel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+keep_editing_on_text_submit = true
+
+[node name="CloseHint" type="Label" parent="Root/Panel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 12
+text = "E: CLOSE"
+horizontal_alignment = 2

@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/maze_backrooms.gd" id="1_maze"]
+[ext_resource type="PackedScene" path="res://scenes/fp_player.tscn" id="2_player"]
+[ext_resource type="Shader" path="res://shaders/monochrome.gdshader" id="3_mono"]
+
+[sub_resource type="Environment" id="Environment_backrooms"]
+background_mode = 1
+background_color = Color(0, 0, 0, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.6, 0.58, 0.5, 1)
+ambient_light_energy = 0.15
+fog_enabled = true
+fog_light_color = Color(0.04, 0.04, 0.035, 1)
+fog_density = 0.06
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mono"]
+shader = ExtResource("3_mono")
+
+[node name="MazeBackrooms" type="Node3D"]
+script = ExtResource("1_maze")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_backrooms")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+
+[node name="Monochrome" type="CanvasLayer" parent="."]
+layer = 1
+
+[node name="Filter" type="ColorRect" parent="Monochrome"]
+material = SubResource("ShaderMaterial_mono")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HintLayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="CrouchHint" type="Label" parent="HintLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 8
+text = "CTRL: CROUCH"
+horizontal_alignment = 1

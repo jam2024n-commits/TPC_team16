@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/trial_floor.gd" id="1_floor"]
+[ext_resource type="PackedScene" path="res://scenes/trial_border.tscn" id="2_border"]
+[ext_resource type="PackedScene" path="res://scenes/trial_player.tscn" id="3_player"]
+
+[node name="TrialRoom" type="Node2D"]
+script = ExtResource("1_floor")
+floor_number = 3
+
+[node name="Border" parent="." instance=ExtResource("2_border")]
+
+[node name="Player" parent="." instance=ExtResource("3_player")]
+position = Vector2(36, 258)

@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/boss_player.gd" id="1_player"]
+[ext_resource type="Texture2D" path="res://assets/characters/player/32x32.png" id="2_tex"]
+[ext_resource type="Texture2D" path="res://assets/characters/player/taiki.png" id="9_idle"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(14, 24)
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("1_player")
+idle_texture = ExtResource("9_idle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_tex")

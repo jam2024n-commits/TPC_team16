@@ -1,0 +1,153 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/settings_menu.gd" id="1_settings"]
+
+[node name="SettingsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_settings")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 42.0
+offset_right = 360.0
+offset_bottom = 228.0
+color = Color(0.1, 0.1, 0.14, 1)
+
+[node name="Heading" type="Label" parent="Panel"]
+layout_mode = 0
+offset_top = 6.0
+offset_right = 240.0
+offset_bottom = 27.0
+theme_override_font_sizes/font_size = 15
+text = "設定"
+horizontal_alignment = 1
+
+[node name="MuteButton" type="CheckButton" parent="Panel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 39.0
+offset_right = 216.0
+offset_bottom = 63.0
+theme_override_font_sizes/font_size = 12
+text = "ミュート"
+
+[node name="VolumeLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 75.0
+offset_right = 66.0
+offset_bottom = 93.0
+theme_override_font_sizes/font_size = 12
+text = "音量"
+vertical_alignment = 1
+
+[node name="VolumeSlider" type="HSlider" parent="Panel"]
+layout_mode = 0
+offset_left = 69.0
+offset_top = 76.0
+offset_right = 177.0
+offset_bottom = 92.0
+step = 5.0
+value = 100.0
+
+[node name="VolumeValue" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 180.0
+offset_top = 75.0
+offset_right = 216.0
+offset_bottom = 93.0
+theme_override_font_sizes/font_size = 12
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ResetButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 108.0
+offset_right = 180.0
+offset_bottom = 129.0
+theme_override_colors/font_color = Color(1, 0.55, 0.5, 1)
+theme_override_colors/font_focus_color = Color(1, 0.55, 0.5, 1)
+theme_override_colors/font_hover_color = Color(1, 0.65, 0.6, 1)
+theme_override_font_sizes/font_size = 12
+text = "全データリセット"
+
+[node name="Message" type="Label" parent="Panel"]
+layout_mode = 0
+offset_top = 133.0
+offset_right = 240.0
+offset_bottom = 147.0
+theme_override_colors/font_color = Color(0.7, 0.7, 0.75, 1)
+theme_override_font_sizes/font_size = 9
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CloseButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 84.0
+offset_top = 151.0
+offset_right = 156.0
+offset_bottom = 172.0
+theme_override_font_sizes/font_size = 12
+text = "閉じる"
+
+[node name="Confirm" type="ColorRect" parent="Panel"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.1, 0.14, 1)
+
+[node name="Text" type="Label" parent="Panel/Confirm"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 36.0
+offset_right = 228.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 12
+text = "すべてのデータ（獲得したアイテム、進み具合、音の設定）を消して、最初の状態に戻しますか？"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Buttons" type="HBoxContainer" parent="Panel/Confirm"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 111.0
+offset_right = 210.0
+offset_bottom = 132.0
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="NoButton" type="Button" parent="Panel/Confirm/Buttons"]
+custom_minimum_size = Vector2(72, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "やめる"
+
+[node name="YesButton" type="Button" parent="Panel/Confirm/Buttons"]
+custom_minimum_size = Vector2(72, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.55, 0.5, 1)
+theme_override_colors/font_focus_color = Color(1, 0.55, 0.5, 1)
+theme_override_font_sizes/font_size = 12
+text = "消す"
