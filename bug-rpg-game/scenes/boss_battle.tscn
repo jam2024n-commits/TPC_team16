@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/boss_battle.gd" id="1_battle"]
 [ext_resource type="PackedScene" path="res://scenes/trial_border.tscn" id="2_border"]
 [ext_resource type="Script" path="res://scripts/boss_sprite.gd" id="3_boss"]
 [ext_resource type="PackedScene" path="res://scenes/boss_player.tscn" id="4_player"]
 [ext_resource type="Texture2D" path="res://assets/background/BOSS/boss_background.png" id="5_bg"]
+[ext_resource type="PackedScene" path="res://scenes/boss_help.tscn" id="6_help"]
 
 [node name="BossBattle" type="Node2D"]
 script = ExtResource("1_battle")
@@ -164,3 +165,5 @@ theme_override_font_sizes/font_size = 24
 text = "GAME CLEAR"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Help" parent="." instance=ExtResource("6_help")]

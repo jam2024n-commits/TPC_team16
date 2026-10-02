@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/credits.gd" id="1_credits"]
 [ext_resource type="FontFile" path="res://assets/fonts/KouzanGyousho.ttf" id="2_font"]
-[ext_resource type="FontVariation" path="res://assets/fonts/kouzan_gyousho_bold.tres" id="3_bold"]
 
 [node name="Credits" type="Control" groups=["no_pause_menu"]]
 layout_mode = 3
@@ -30,8 +29,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("3_bold")
-theme_override_font_sizes/font_size = 26
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 1
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 30
 text = "世界は平和を取り戻した。"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -50,6 +51,8 @@ layout_mode = 0
 offset_top = 48.0
 offset_right = 480.0
 offset_bottom = 111.0
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 1
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 44
 text = "試練の間"

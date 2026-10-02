@@ -6,6 +6,7 @@ extends Node2D
 # 赤い弾はよけるしかない。黄色い弾は、しゃがみ＋ダッシュ中（壁抜けと同じ条件）だけすり抜けられる（boss_bullet_clip）。
 # 自機の攻撃（どちらもボスの方向へまっすぐ飛ぶ）：Space の通常弾（杖を持っているときだけ）、C のチャージ弾（ローブを持っているときだけ）。
 # 盾を持っていると、1回だけダメージを受けない（リトライすると戻る）。
+# 始める前に操作説明のウィンドウ（scenes/boss_help.tscn）を出し、閉じてから戦いが始まる（リトライのときは出さない）
 # ボスの HP が 0 になると GAME CLEAR（CLEAR_WAIT 秒後に暗転してエンディング scenes/credits.tscn へ）、自機の HP が 0 になると GAME OVER
 
 const MAGIC_CIRCLE := preload("res://scripts/magic_circle.gd")
@@ -98,6 +99,10 @@ const CYCLE := [Phase.NORMAL, Phase.BIG_RED, Phase.NORMAL, Phase.YELLOW]
 @onready var _game_over: Control = $GameOver/Root
 @onready var _retry_button: Button = $GameOver/Root/Buttons/RetryButton
 @onready var _title_button: Button = $GameOver/Root/Buttons/TitleButton
+@onready var _help = $Help  # boss_help.gd
+
+# リトライで読み込み直したときは操作説明を出さない（シーンを読み込み直しても残るよう static にしている）
+static var _skip_help := false
 
 var _state := State.FIGHT
 var _hp := PLAYER_HP
@@ -125,11 +130,15 @@ func _ready() -> void:
 	_shield_icon.visible = _shield
 	_player.shot_fired.connect(_on_shot_fired)
 	_player.charge_fired.connect(_on_charge_fired)
-	_retry_button.pressed.connect(ViewSwitcher.go_to.bind(scene_file_path))
+	_retry_button.pressed.connect(_retry)
 	_title_button.pressed.connect(ViewSwitcher.go_to.bind(TITLE_SCENE))
 	_bullet_layer.draw.connect(_draw_bullets)
 	_update_hp_label()
 	_update_boss_hp_bar()
+	if _skip_help:
+		_skip_help = false
+	else:
+		_help.open(_player.can_shoot, _player.can_charge)
 
 
 func _physics_process(delta: float) -> void:
@@ -371,6 +380,11 @@ func _on_game_clear() -> void:
 	_clear.visible = true
 	await get_tree().create_timer(CLEAR_WAIT, false).timeout
 	ViewSwitcher.go_to(CREDITS_SCENE)
+
+
+func _retry() -> void:
+	_skip_help = true
+	ViewSwitcher.go_to(scene_file_path)
 
 
 func _on_game_over() -> void:

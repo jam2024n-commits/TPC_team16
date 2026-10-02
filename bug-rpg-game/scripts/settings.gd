@@ -8,6 +8,8 @@ signal changed
 const SETTINGS_PATH := "user://settings.cfg"
 const SECTION := "sound"
 const DEFAULT_VOLUME := 1.0
+# 全体の音が大きかったので、音量 100% のときを元の大きさの MASTER_GAIN 倍にする（スライダーの表示はそのまま）
+const MASTER_GAIN := 0.8
 
 var volume := DEFAULT_VOLUME  # 0〜1
 var muted := false
@@ -41,7 +43,7 @@ func reset() -> void:
 
 func _apply() -> void:
 	var bus := AudioServer.get_bus_index("Master")
-	AudioServer.set_bus_volume_db(bus, linear_to_db(volume))
+	AudioServer.set_bus_volume_db(bus, linear_to_db(volume * MASTER_GAIN))
 	AudioServer.set_bus_mute(bus, muted or volume <= 0.0)
 	changed.emit()
 
